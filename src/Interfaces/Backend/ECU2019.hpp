@@ -6,9 +6,6 @@ namespace CAN::Interfaces {
 
 class ECU2019 : public Interface {
   public:
-    ECU2019() = default;
-    ~ECU2019() = default;
-
     void startReceiving();
 
   private:

@@ -1,3 +1,5 @@
+add_subdirectory(Interfaces)
+
 if (${BUILD_BACKEND})
     add_subdirectory(CANLib)
     add_subdirectory(BusDump)
@@ -5,12 +7,6 @@ if (${BUILD_BACKEND})
 endif()
 
 if (${BUILD_FRONTEND})
-    # Have fake interfaces to allow FE to start building right away.
-    if (${BUILD_BACKEND})
-        add_subdirectory(Interfaces)
-    else()
-        add_subdirectory(FakeInterfaces)
-    endif()
     add_subdirectory(RuntimeQml)
     add_subdirectory(Dash)
 endif()

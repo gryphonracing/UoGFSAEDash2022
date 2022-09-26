@@ -4,9 +4,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
-#include <stdexcept>
 #include <thread>
-#include <vector>
 
 #include <defs.hpp>
 

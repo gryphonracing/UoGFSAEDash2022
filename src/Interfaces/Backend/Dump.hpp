@@ -6,9 +6,6 @@ namespace CAN::Interfaces {
 
 class Dump : public Interface {
   public:
-    Dump() = default;
-    ~Dump() = default;
-
     void startReceiving();
 
   private:
