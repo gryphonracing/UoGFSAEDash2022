@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
+#include <MotorController.hpp>
 #include <fmt/core.h>
 
 #ifdef QT_DEBUG

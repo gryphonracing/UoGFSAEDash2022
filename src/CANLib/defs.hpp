@@ -1,10 +1,10 @@
 #pragma once
 
-#if __linux__
+#if defined(__linux__)
 #include <linux/can.h>
 #include <unistd.h>
 #else
-
+#error "Cannot build backend if not on linux"
 #endif
 
 enum class CanFormat { Standard, Extended };

@@ -33,8 +33,8 @@ class GRCDash(ConanFile):
     exports_sources = "CMakeLists.txt", "src/*"
 
     def validate(self):
-        if self.settings.os == "Windows" and self.options.dev != "front":
-            raise ConanInvalidConfiguration("Windows backend for canbus not supported")
+        if self.settings.os != "Linux" and self.options.dev != "front":
+            raise ConanInvalidConfiguration("Non-Linux backend for canbus not supported")
 
     def configure(self):
         if self.settings.compiler == 'Visual Studio':
@@ -48,6 +48,8 @@ class GRCDash(ConanFile):
     def requirements(self):
         if self.options.dev != "back":
             self.requires("qt/6.3.1")
+        else:
+            self.generators = "CMakeDeps",
         self.requires("fmt/9.0.0")
 
     def layout(self):
@@ -61,12 +63,8 @@ class GRCDash(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
-        
-        if self.options.dev != "front":
-            cmake.build(target="CANLib")
-            cmake.build(target="BusDump")
-
-        if self.options.dev != "back":
-            cmake.build(target="RuntimeQml")
-            cmake.build(target="GryphonDash")
+        cmake.configure(variables={
+            "BUILD_FRONTEND": self.options.dev != "back",
+            "BUILD_BACKEND": self.options.dev != "front"
+        })
+        cmake.build()
