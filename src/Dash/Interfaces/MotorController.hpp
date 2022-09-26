@@ -2,13 +2,13 @@
 
 #include <atomic>
 #include <cstdint>
+#include <functional>
+#include <future>
+#include <map>
+#include <memory>
+#include <stdexcept>
 #include <thread>
 #include <vector>
-#include <stdexcept>
-#include <future>
-#include <memory>
-#include <map>
-#include <functional>
 
 #include <CANLib/Interface/Interface.hpp>
 
@@ -16,16 +16,13 @@
 template <class F>
 void callAsync(F&& fun) {
     auto fut_ptr = std::make_shared<std::future<void>>();
-    *fut_ptr = std::async(std::launch::async, [fut_ptr, fun]() {
-        fun();
-    });
+    *fut_ptr = std::async(std::launch::async, [fut_ptr, fun]() { fun(); });
 }
-
 
 class MotorController : public Interface, public QObject {
     Q_OBJECT
   public:
-    MotorController(); 
+    MotorController();
     ~MotorController() = default;
 
     void startReceiving();
@@ -35,21 +32,22 @@ class MotorController : public Interface, public QObject {
     void assignCallback(Outputs to_notify_for, std::function<void(uint16_t)>);
 
   private:
-    // As of now, newFrame and newError should be extremely fast functions before emitting more signals
+    // As of now, newFrame and newError should be extremely fast functions before emitting more
+    // signals
     void newFrame(const can_frame&) override;
     void newError() override;
 
   private:
-    can_filter m_filters[] = {
-        {
-            0x0A0, 0xFF0 // Grab all messages from 0xA0 to 0xAF
-        },
-        {
-            0x0B0, 0xFFF // Grab all messages from 0xB0
-        }
-    };
+    can_filter m_filters[] = {{
+                                  0x0A0,
+                                  0xFF0 // Grab all messages from 0xA0 to 0xAF
+                              },
+                              {
+                                  0x0B0,
+                                  0xFFF // Grab all messages from 0xB0
+                              }};
 
-public:
+  public:
     enum Outputs {
         // 0x0A0 - Temps #1
         ModuleATemp,

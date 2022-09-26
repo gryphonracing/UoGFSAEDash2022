@@ -1,17 +1,17 @@
 #include <cassert>
-#include <cstring>
 #include <cerrno>
-#include <unistd.h>
-#include <sys/socket.h>
+#include <cstring>
+#include <linux/can/raw.h>
 #include <net/if.h>
 #include <sys/ioctl.h>
-#include <linux/can/raw.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
 #include <Interface.hpp>
 
 using namespace CAN;
 
-void Interface::readLoop(){
+void Interface::readLoop() {
     can_frame frame = {};
     while (!this->m_should_exit) {
         switch (this->read(frame)) {
@@ -37,7 +37,10 @@ void Interface::stopReceiving() {
     ::close(m_socket);
 }
 
-RetCode Interface::openSocket(const char* canbus_interface_name, const can_filter* filters, size_t filter_count, uint32_t read_timeout_ms) {
+RetCode Interface::openSocket(const char* canbus_interface_name,
+                              const can_filter* filters,
+                              size_t filter_count,
+                              uint32_t read_timeout_ms) {
     m_socket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (m_socket < 0) {
         return RetCode::SocketErr;
@@ -49,21 +52,23 @@ RetCode Interface::openSocket(const char* canbus_interface_name, const can_filte
     ioctl(m_socket, SIOCGIFINDEX, &ifr);
 
     if (filter_count > 0) {
-        if (setsockopt(m_socket, SOL_CAN_RAW, CAN_RAW_FILTER, filters, sizeof(can_filter) * filter_count) < 0) {
+        if (setsockopt(
+                m_socket, SOL_CAN_RAW, CAN_RAW_FILTER, filters, sizeof(can_filter) * filter_count) <
+            0) {
             return RetCode::SocketErr;
         }
     }
 
-    if (read_timeout_ms != 0){
+    if (read_timeout_ms != 0) {
         timeval tv;
-        tv.tv_sec = 0;                         
+        tv.tv_sec = 0;
         tv.tv_usec = read_timeout_ms * 1000;
-        
+
         if (setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (void*)&tv, sizeof(timeval)) < 0) {
             return RetCode::SocketErr;
         }
     }
-    
+
     sockaddr_can addr;
     addr.can_family = AF_CAN;
     addr.can_ifindex = ifr.ifr_ifindex;
@@ -76,8 +81,8 @@ RetCode Interface::openSocket(const char* canbus_interface_name, const can_filte
 RetCode Interface::read(can_frame& frame) {
     // Read in a CAN frame
     auto num_bytes = ::read(m_socket, &frame, sizeof(frame));
-    if (num_bytes == -1) { // Error during read
-        if (errno == EAGAIN){ // ::read timed out
+    if (num_bytes == -1) {     // Error during read
+        if (errno == EAGAIN) { // ::read timed out
             return RetCode::Timeout;
         }
         return RetCode::ReadErr;
@@ -88,8 +93,6 @@ RetCode Interface::read(can_frame& frame) {
     }
     return RetCode::Success;
 }
-
-
 
 Interface::~Interface() {
     this->stopReceiving();
