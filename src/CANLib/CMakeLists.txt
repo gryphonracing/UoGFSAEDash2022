@@ -6,6 +6,7 @@ set(CODE_FILES
 set(HEADER_FILES
     Interface/Interface.hpp
     Tools/tools.hpp
+    Tools/converters.hpp
     defs.hpp
 )
 

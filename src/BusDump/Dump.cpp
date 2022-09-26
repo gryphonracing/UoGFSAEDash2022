@@ -28,8 +28,8 @@ void Dump::newFrame(const can_frame& frame) {
 
 void Dump::newError(const can_frame& frame) {
     fmt::print("Error\n");
-};
+}
 
 void Dump::newTimeout() {
     fmt::print("Timeout\n");
-};
+}
