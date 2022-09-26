@@ -1,0 +1,64 @@
+{
+    "MotorController": {
+        "endian": "little",
+        "filters": [
+            {
+                "id": "0x0A0",
+                "mask": "0xFF0"
+            },
+            {
+                "id": "0x0B0",
+                "mask": "0xFFF"
+            }
+        ],
+        "addresses": {
+            "0x0A0": {
+                "name": "Temps #1",
+                "out": true,
+                "components": [
+                    {
+                        "name": "Module A Temp",
+                        "bytes": [0, 1],
+                        "factor": 10,
+                        "signed": true
+                    },
+                    {
+                        "name": "Module B Temp",
+                        "bytes": [2, 3],
+                        "factor": 10,
+                        "signed": true
+                    },
+                    {
+                        "name": "Module C Temp",
+                        "bytes": [4, 5],
+                        "factor": 10,
+                        "signed": true
+                    },
+                    {
+                        "name": "Gate Driver Temp",
+                        "bytes": [6, 7],
+                        "factor": 10,
+                        "signed": true
+                    }
+                ]
+            },
+            "0x0A1": {},
+            "0x0A2": {},
+            "0x0A3": {},
+            "0x0A4": {},
+            "0x0A5": {},
+            "0x0A6": {},
+            "0x0A7": {},
+            "0x0A8": {},
+            "0x0A9": {},
+            "0x0AA": {},
+            "0x0AB": {},
+            "0x0AC": {},
+            "0x0AD": {},
+            "0x0AE": {},
+            "0x0AF": {},
+            "0x0B0": {}
+        }
+        
+    }
+}
