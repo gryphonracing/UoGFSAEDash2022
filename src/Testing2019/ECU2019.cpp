@@ -18,7 +18,7 @@ void ECU2019::newFrame(const can_frame& frame) {
                 frame.data[0], frame.data[1]),
             convertToSigned<10>(frame.data[2], frame.data[3]),
             convertToSigned<10>(frame.data[4], frame.data[5]),
-            convertToSigned<10>(frame.data[6], frame.data[7]), );
+            convertToSigned<10>(frame.data[6], frame.data[7]));
         break;
 
     case 0x0CFFF148: // Barometer, MAP, Lambda, Pressure Type
