@@ -19,12 +19,7 @@ class Dump : public Interface {
     void newTimeout() override;
 
   private:
-    static constexpr can_filter filters[] = {{
-        0,
-        0 // Grab all messages
-    }};
-
-    static constexpr uint32_t timeout = 500;
+    static constexpr uint32_t timeout_ms = 500;
 };
 
 } // namespace CAN::Interfaces

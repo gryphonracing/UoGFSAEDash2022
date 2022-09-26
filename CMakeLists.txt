@@ -4,7 +4,6 @@ project(GRCDash LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}, Flags: ${CMAKE_CXX_FLAGS}")
-message(STATUS ${BUILD_FRONTEND})
 
 if(${BUILD_FRONTEND})
     # Allows including .qrc files in executable

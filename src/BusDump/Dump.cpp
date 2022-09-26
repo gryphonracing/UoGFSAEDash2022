@@ -6,7 +6,7 @@
 using namespace CAN::Interfaces;
 
 void Dump::startReceiving() {
-    this->Interface::startReceiving("vcan0", Dump::filters, Dump::timeout); // Get everything
+    this->Interface::startReceiving("vcan0", {}, Dump::timeout_ms); // Get everything
 }
 
 void Dump::newFrame(const can_frame& frame) {

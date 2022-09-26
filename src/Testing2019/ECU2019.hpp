@@ -41,7 +41,7 @@ class ECU2019 : public Interface {
             0xFFFFFFFF // Grab all messages from 0CFFD048
         }};
 
-    static constexpr uint32_t timeout = 500;
+    static constexpr uint32_t timeout_ms = 500;
 };
 
 } // namespace CAN::Interfaces

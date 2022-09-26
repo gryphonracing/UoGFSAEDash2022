@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -19,9 +20,8 @@ class Interface {
   protected:
     template <size_t N>
     RetCode startReceiving(const char* canbus_interface_name,
-                           const can_filter (&filters)[N],
-                           uint32_t read_timeout_ms) {
-        if (this->openSocket(canbus_interface_name, filters, N, read_timeout_ms) !=
+                           const std::array<can_filter, N>& filters uint32_t read_timeout_ms) {
+        if (this->openSocket(canbus_interface_name, filters.data(), N, read_timeout_ms) !=
             RetCode::Success) {
             return RetCode::SocketErr;
         }
@@ -39,11 +39,11 @@ class Interface {
 
     template <size_t N>
     RetCode write(uint32_t address,
-                  const std::byte (&payload)[N],
+                  const std::array<std::byte, N>& payload,
                   bool extended = false,
                   bool error_frame = false,
                   bool remote_transmission_request = false) {
-        static_assert(1 <= N && N <= 8, "Size of payload must be between 1 and 8");
+        static_assert(0 <= N && N <= 8, "Size of payload must be between 0 and 8");
         if (address & 0xE0000000) { // Disallow passing anything but the address.
             return RetCode::InvalidParam;
         }
