@@ -9,6 +9,8 @@ if (${BUILD_FRONTEND})
         target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Full)
     else()
         target_sources(CANInterfaces PUBLIC
+            Frontend/FakeInterface.hpp
+            Frontend/FakeInterface.cpp
             Frontend/MotorController.hpp
             Frontend/MotorController.cpp
         ) # Currently no fake interfaces

@@ -5,17 +5,19 @@
 
 #include <FakeInterface.hpp>
 
-class MotorController : public FakeInterface, public QObject {
+class MotorController : public QObject, public CAN::FakeInterface {
     Q_OBJECT
   public:
-    MotorController(QObject* parent) : QObject(parent) {}
+    MotorController(QObject* parent = nullptr) : QObject(parent) {
+        this->CAN::FakeInterface::startReceiving();
+    }
     ~MotorController() = default;
 
-signals:
+  signals:
     void newRPM(uint32_t rpm);
     void newCoolantTemp(int32_t temp);
     void newOilTemp(int32_t temp);
 
   private:
-    void generateValues() override;
+    void generateValues();
 };

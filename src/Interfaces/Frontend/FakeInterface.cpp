@@ -1,7 +1,3 @@
-#include <cassert>
-#include <cerrno>
-#include <cstring>
-
 #include <FakeInterface.hpp>
 
 using namespace CAN;

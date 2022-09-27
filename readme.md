@@ -35,10 +35,13 @@ python -m pip install conan # or python3 on MacOS
 Run the conan install script (`-pr` is the profile being used, the options are found in [ConanProfiles](./ConanProfiles/))
 ```bash
 # Windows VS2019
-conan install . -if build -pr:h=ConanProfiles/Visual-Studio-2019-Debug.ini -pr:b=ConanProfiles/Visual-Studio-2019-Debug.ini --build=missing -o dev="front"
+conan install . -if build -pr:h=ConanProfiles/VS2019-Debug.ini -pr:b=ConanProfiles/VS2019-Debug.ini --build=missing -o dev="front"
 
-# Windows gcc 12
-conan install . -if build -pr:h=ConanProfiles/Windows-gcc-12-Debug.ini -pr:b=ConanProfiles/Windows-gcc-12-Debug.ini --build=missing -o dev="front"
+# Windows VS2022
+conan install . -if build -pr:h=ConanProfiles/VS2022-Debug.ini -pr:b=ConanProfiles/VS2022-Debug.ini --build=missing -o dev="front"
+
+# MacOS clang 14
+conan install . -if build -pr:h=ConanProfiles/MacOS-clang-Debug.ini -pr:b=ConanProfiles/MacOS-clang-Debug.ini --build=missing -o dev="front"
 
 # RPi 4b (gcc 10.2)
 conan install . -if build -pr:h=ConanProfiles/pi4b-Debug.ini -pr:b=ConanProfiles/pi4b-Debug.ini --build=missing -o dev="full"

@@ -1,6 +1,6 @@
 #include <fmt/core.h>
 
-#include "MotorController.hpp"
+#include <MotorController.hpp>
 
 using namespace CAN::Interface;
 

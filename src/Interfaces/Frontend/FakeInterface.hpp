@@ -14,7 +14,7 @@ class FakeInterface {
 
   protected:
     void stopReceiving();
-    virtual void generateValues();
+    virtual void generateValues() = 0;
 
   private:
     void readLoop();
