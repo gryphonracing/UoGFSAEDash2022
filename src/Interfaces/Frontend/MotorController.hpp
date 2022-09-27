@@ -14,9 +14,9 @@ class MotorController : public QObject, public CAN::FakeInterface {
     ~MotorController() = default;
 
   signals:
-    void newRPM(uint32_t rpm);
-    void newCoolantTemp(int32_t temp);
-    void newOilTemp(int32_t temp);
+    void newRPM(int16_t rpm);
+    void newCoolantTemp(float temp);
+    void newOilTemp(float temp);
 
   private:
     void generateValues();

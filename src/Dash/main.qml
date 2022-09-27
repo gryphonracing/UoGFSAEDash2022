@@ -11,8 +11,16 @@ ApplicationWindow {
         anchors.fill: parent
         color: "Green"
     }
-
-    MotorController.onNewRPM: (rpm) => {
-        console.log(rpm);
+    Connections {
+        target: MotorController
+        onNewRPM: (rpm) => {
+            console.log("RPM:", rpm)
+        }
+        onNewCoolantTemp: (coolant_temp) => {
+            console.log("Coolant Temp:", coolant_temp.toFixed(1))
+        }
+        onNewOilTemp: (oil_temp) => {
+            console.log("Oil Temp", oil_temp.toFixed(1))
+        }
     }
 }

@@ -10,10 +10,11 @@
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    MotorController motor_controller; // Should be before QQml engine
+    MotorController* motor_controller = new MotorController(); // Should be before QQml engine
     QQmlApplicationEngine engine;
 
-    qmlRegisterSingletonInstance<MotorController>("CAN.MotorController", 1, 0, "MotorController", &motor_controller);
+    qmlRegisterSingletonInstance<MotorController>(
+        "CAN.MotorController", 1, 0, "MotorController", motor_controller);
 #ifdef QT_DEBUG
     RuntimeQml* rt = new RuntimeQml(&engine);
     rt->parseQrc(ROOT_SOURCE_PATH "/qml.qrc");
