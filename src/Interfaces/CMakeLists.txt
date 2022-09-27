@@ -13,6 +13,8 @@ if (${BUILD_FRONTEND})
             Frontend/FakeInterface.cpp
             Frontend/MotorController.hpp
             Frontend/MotorController.cpp
+            Frontend/BMS.hpp
+            Frontend/BMS.cpp
         ) # Currently no fake interfaces
         target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Frontend)
     endif()
