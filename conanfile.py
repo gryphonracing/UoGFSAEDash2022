@@ -32,6 +32,9 @@ class GRCDash(ConanFile):
     generators = "CMakeDeps", "qt"
     exports_sources = "CMakeLists.txt", "src/*"
 
+    def imports(self):
+        self.copy("*.dll", "build/bin", "bin")
+
     def validate(self):
         if self.settings.os != "Linux" and self.options.dev != "front":
             raise ConanInvalidConfiguration("Non-Linux backend for canbus not supported")

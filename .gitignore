@@ -2,3 +2,4 @@ build/
 CMakeUserPresets.json
 .vscode/
 .DS_store
+conan_imports_manifest.txt
