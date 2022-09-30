@@ -13,5 +13,4 @@ void BMS::generateValues() {
     if (voltage >= 145) {
         voltage = 110;
     }
-    
 }

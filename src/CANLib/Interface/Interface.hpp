@@ -18,7 +18,8 @@ class Interface {
   protected:
     template <size_t N>
     RetCode startReceiving(const char* canbus_interface_name,
-                           const std::array<can_filter, N>& filters uint32_t read_timeout_ms) {
+                           const std::array<can_filter, N>& filters,
+                           uint32_t read_timeout_ms) {
         if (this->openSocket(canbus_interface_name, filters.data(), N, read_timeout_ms) !=
             RetCode::Success) {
             return RetCode::SocketErr;

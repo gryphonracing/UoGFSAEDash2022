@@ -5,6 +5,8 @@ if (${BUILD_FRONTEND})
         target_sources(CANInterfaces PUBLIC
             Full/MotorController.hpp
             Full/MotorController.cpp
+            Full/BMS.hpp
+            Full/BMS.cpp
         )
         target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Full)
     else()
@@ -18,7 +20,7 @@ if (${BUILD_FRONTEND})
         ) # Currently no fake interfaces
         target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Frontend)
     endif()
-    target_link_libraries(CANInterfaces PRIVATE qt::qt)
+    target_link_libraries(CANInterfaces PUBLIC qt::qt)
 endif()
 
 if (${BUILD_BACKEND})
@@ -31,4 +33,5 @@ if (${BUILD_BACKEND})
     target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Backend)
 endif()
 
-set_target_properties(CANInterfaces PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<0:>)
+set_target_properties(CANInterfaces PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<0:>)
+target_link_libraries(CANInterfaces PUBLIC fmt::fmt CANLib)
