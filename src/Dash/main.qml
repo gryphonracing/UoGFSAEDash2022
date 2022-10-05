@@ -5,9 +5,14 @@ import CAN.BMS
 
 ApplicationWindow {
     visible: true
-    width: 640
-    height: 480
+    width: 400
+    height: 200
     title: "GRC Dash"
+    maximumHeight: height
+    maximumWidth: width
+
+    minimumHeight: height
+    minimumWidth: width
     Column {
         Text {
             id: rpm_text_text
