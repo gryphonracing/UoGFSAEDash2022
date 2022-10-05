@@ -26,7 +26,10 @@ class BMS : public QObject, public CAN::Interface {
     void newTimeout() override;
 
   private:
-    static constexpr std::array<can_filter, 0> filters{{}};
+    static constexpr std::array<can_filter, 1> filters{{
+        0x000007EB,
+        0xFFFFFFFF // Only grab from our BMS (7EB is the response addr, 7E3 is the BMS addr)
+    }};
 
     static constexpr uint32_t timeout_ms = 500;
 };
