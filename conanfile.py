@@ -6,12 +6,6 @@ from conans.errors import ConanInvalidConfiguration
 import os
 
 class GRCDash(ConanFile):
-    scm = {
-        "type": "git",
-        "url":"auto",
-        "revision": "auto"
-    }
-
     name = "GRCDash"
     version = "0.1.0"
     description = "Gryphon Racing Club Dash"
@@ -29,11 +23,11 @@ class GRCDash(ConanFile):
         "dev": "full"
     }
 
-    generators = "CMakeDeps", "qt"
+    generators = "CMakeDeps", "virtualrunenv", "qt"
     exports_sources = "CMakeLists.txt", "src/*"
 
     def imports(self):
-        self.copy("*.dll", "build/bin", "bin")
+        self.copy("*.dll", dst=os.path.join(self.build_folder, "bin"), src="@bindirs")
 
     def validate(self):
         if self.settings.os != "Linux" and self.options.dev != "front":
@@ -52,7 +46,7 @@ class GRCDash(ConanFile):
         if self.options.dev != "back":
             self.requires("qt/6.3.1")
         else:
-            self.generators = "CMakeDeps",
+            self.generators = "CMakeDeps", "virtualrunenv"
         self.requires("fmt/9.0.0")
 
     def layout(self):

@@ -59,6 +59,14 @@ conan install . -if build -pr:h=ConanProfiles/Linux-gcc-12-Debug.ini -pr:b=Conan
 conan build -if build .
 ```
 
+## Running
+
+```bash
+source build/activate_run.sh # RPi (maybe required on other linux distros)
+./build/Debug/bin/GryphonDash
+source build/deactivate_run.sh # RPi (maybe required on other linux distros)
+```
+
 ## Code Standards
 
 Naming standards are as follows:
