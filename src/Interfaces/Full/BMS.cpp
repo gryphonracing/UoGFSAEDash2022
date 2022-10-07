@@ -3,6 +3,9 @@
 #include <BMS.hpp>
 #include <tools.hpp>
 
+const unsigned int _BMSRecieveAddress = 0x7E3;
+const unsigned int _BMSsendingAddress = 0x7EB;  //Add 8 to the recieve address to get sending address
+
 using namespace CAN;
 
 void BMS::newFrame(const can_frame& frame) {
@@ -26,3 +29,7 @@ void BMS::newError(const can_frame&) {
 };
 
 void BMS::newTimeout(){};
+
+void BMS::recieveData() {
+
+}
