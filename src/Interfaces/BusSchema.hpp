@@ -94,5 +94,14 @@ uint16_t toCount(std::byte low_byte, std::byte high_byte) {
 float toPSI(std::byte low_byte, std::byte high_byte) {
     return convertToSigned<10>(low_byte, high_byte);
 }
+
+float toVoltage (std::byte low_byte, std::byte high_byte) {
+    return combineTo<uint16_t>(low_byte, high_byte);
+}
+
+float toStateOfCharge (std::byte low_byte, std::byte high_byte) {
+    return combineTo<uint16_t>(low_byte, high_byte);
+}
+
 } // namespace MotorController
 } // namespace CAN

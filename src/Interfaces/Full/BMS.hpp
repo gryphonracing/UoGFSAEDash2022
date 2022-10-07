@@ -32,4 +32,6 @@ class BMS : public QObject, public CAN::Interface {
     }};
 
     static constexpr uint32_t timeout_ms = 500;
+    static uint32_t _BMSsendingAddress = 0x7E3;
+    static uint32_t _BMSRecieveAddress = 0x7EB; //Add 8 to the send address to get sending address
 };
