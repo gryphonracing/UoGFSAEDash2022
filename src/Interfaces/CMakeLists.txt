@@ -34,4 +34,6 @@ if (${BUILD_BACKEND})
 endif()
 
 set_target_properties(CANInterfaces PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<0:>)
+target_sources(CANInterfaces PUBLIC BusSchema.hpp)
+target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(CANInterfaces PUBLIC fmt::fmt CANLib)
