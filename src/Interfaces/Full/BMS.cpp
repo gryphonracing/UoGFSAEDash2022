@@ -48,25 +48,25 @@ void BMS::newFrame(const can_frame& frame) {
     switch (CAN::frameId(frame)) {
 
     //Pack voltage
-    case 0xF00D: { 
-        auto pack_votage = toVoltage(frame.data[3], frame.data[5]);
-        fmt::print("Pack votage: {} C\n", pack_votage);
-        //emit newCoolantTemp(coolant_temp);
-        break;
-    }
+    // case 0xF00D: { 
+    //     // auto pack_votage = toVoltage(frame.data[3], frame.data[5]);
+    //     fmt::print("Pack votage: {} C\n", pack_votage);
+    //     //emit newCoolantTemp(coolant_temp);
+    //     break;
+    // }
 
               
-    //Pack state of charge
-    case 0xF00F: { // Digital Input Status
-        auto state_of_charge = toStateOfCharge(frame.data[3], frame.data[5]);
-        fmt::print("Pack state of charge (0-100): {} C\n", state_of_charge);
-        //emit newCoolantTemp(coolant_temp);
-        break;
-    }
+    // //Pack state of charge
+    // case 0xF00F: { // Digital Input Status
+    //     auto state_of_charge = toStateOfCharge(frame.data[3], frame.data[5]);
+    //     fmt::print("Pack state of charge (0-100): {} C\n", state_of_charge);
+    //     //emit newCoolantTemp(coolant_temp);
+    //     break;
+    // }
 
     //Any other value, print to console
     default:
-        fmt::print("Error!, didn't find pack state of charge or voltatge\n")
+        fmt::print("Error!, didn't find pack state of charge or voltage\n");
         fmt::print("ID: 0x{:02X}, Ext: {}, RTR: {}, Err: {}, Payload: 0x{:02X} 0x{:02X} 0x{:02X} "
             "0x{:02X} 0x{:02X} 0x{:02X} 0x{:02X} 0x{:02X}\n",
             CAN::frameId(frame),
@@ -89,9 +89,3 @@ void BMS::newError(const can_frame&) {
 };
 
 void BMS::newTimeout(){};
-
-void BMS::recieveData() {
-
-    
-
-}
