@@ -32,11 +32,11 @@ class MotorController : public QObject, public CAN::Interface {
     inline static can_filter filters[num_of_filters] = {
         {
             0x0A0,
-            0x1F0 // Grab all messages from 0xA0 to 0xAF
+            0x7F0 // Grab all messages from 0xA0 to 0xAF
         },
         {
             0x0B0,
-            0x1FF // Grab all messages from 0xB0
+            0x7FF // Grab all messages from 0xB0
         }};
 
     static constexpr uint32_t timeout_ms = 500;

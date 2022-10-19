@@ -6,6 +6,11 @@
 
 using namespace CAN;
 
+static void registerMetatypes() {
+    qRegisterMetaType<int16_t>("int16_t"); // Pass this type into qml
+}
+Q_CONSTRUCTOR_FUNCTION(registerMetatypes)
+
 void MotorController::newFrame(const can_frame& frame) {
     switch (CAN::frameId(frame)) {
         // case 0x0A0: // Temps #1

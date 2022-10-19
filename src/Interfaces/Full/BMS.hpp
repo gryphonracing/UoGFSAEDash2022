@@ -30,11 +30,11 @@ class BMS : public QObject, public CAN::Interface {
     inline static can_filter filters[num_of_filters] = {
         {
             0x7EB,
-            0x1FF // Only grab from our BMS (7EB is the response addr, 7E3 is the BMS addr)
+            0x7FF // Only grab from our BMS (7EB is the response addr, 7E3 is the BMS addr)
         },
         {
             0x0C0, // Grab 0x0C0 and 0x0C1 for broadcast messages
-            0x1FE
+            0x7FE
         }
     };
 
