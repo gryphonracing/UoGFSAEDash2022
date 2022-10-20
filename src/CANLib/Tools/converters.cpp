@@ -71,3 +71,19 @@ uint16_t toCount(uint8_t low_byte, uint8_t high_byte) {
 float toPSI(uint8_t low_byte, uint8_t high_byte) {
     return convertToSigned<10>(low_byte, high_byte);
 }
+
+float toVoltage (uint8_t low_byte, uint8_t high_byte) {
+    return combineTo<uint16_t>(low_byte, high_byte);
+}
+
+float toStateOfCharge (uint8_t low_byte, uint8_t high_byte) {
+    return combineTo<uint16_t>(low_byte, high_byte);
+}
+
+float toCurrent (uint8_t low_byte, uint8_t high_byte) {
+    return combineTo<uint16_t>(low_byte, high_byte);
+}
+
+float toTemperature (uint8_t low_byte, uint8_t high_byte) {
+    return combineTo<uint16_t>(low_byte, high_byte);
+}
