@@ -43,25 +43,44 @@ void BMS::newFrame(const can_frame& frame) {
     */
    // ------- </Old code>------
 
-    
+
     //For now, just need the pack voltage and pack state of charge
     switch (CAN::frameId(frame)) {
 
     //Pack voltage
-    case 0xF00D: { 
+    case 0xF00D: {
         auto pack_votage = toVoltage(frame.data[3], frame.data[5]);
         fmt::print("Pack votage: {} C\n", pack_votage);
         //emit newCoolantTemp(coolant_temp);
         break;
     }
 
-              
+
     //Pack state of charge
     case 0xF00F: { // Digital Input Status
         auto state_of_charge = toStateOfCharge(frame.data[3], frame.data[5]);
         fmt::print("Pack state of charge (0-100): {} C\n", state_of_charge);
         //emit newCoolantTemp(coolant_temp);
         break;
+    }
+
+    //Pack voltage and pack state of charge
+    case 0x0C0: {
+        auto pack_votage = toVoltage(frame.data[3], frame.data[4]);
+        auto state_of_charge = toStateOfCharge(frame.data[5], frame.data[6]);
+    }
+
+    //Pack current and heat sink temp (celcius)
+    case 0x0C1: {
+        auto pack_current = toCurrent(frame.data[3], frame.data[4]);
+        auto temperature = toTemperature(frame.data[5], frame.data[6]);
+    }
+
+    //Pack peak temp, lowest temp, and heat sink sink temp (celcius)
+    case 0x0C2: {
+        auto temperature_heat_sink = toTemperature(frame.data[3], frame.data[4]);
+        auto temperature_high = toTemperature(frame.data[5], frame.data[6]);
+        auto temperature_low = toTemperature(frame.data[7], frame.data[8]);
     }
 
     //Any other value, print to console
@@ -81,7 +100,6 @@ void BMS::newFrame(const can_frame& frame) {
             frame.data[6],
             frame.data[7]);
     }
-
 }
 
 void BMS::newError(const can_frame&) {
@@ -90,8 +108,4 @@ void BMS::newError(const can_frame&) {
 
 void BMS::newTimeout(){};
 
-void BMS::recieveData() {
-
-    
-
-}
+void BMS::recieveData() {};
