@@ -1,6 +1,5 @@
 set(CODE_FILES
     Interface/Interface.cpp
-    Tools/converters.cpp
     Tools/tools.cpp
 )
 

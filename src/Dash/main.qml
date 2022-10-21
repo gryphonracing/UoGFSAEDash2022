@@ -61,11 +61,23 @@ ApplicationWindow {
 
     Connections {
         target: BMS
-        function onNewVoltage(voltage) {
-            battery_voltage_text.text = `Battery Voltage: ${voltage.toFixed(1)}`
+        function newBMSTemp(temp) {
+            console.log("BMS temp: ", temp);
         }
-        function onNewBatteryPercent(percent) {
-            battery_percent_text.text = `Battery %: ${percent.toFixed(1)}`
+        function newAccumulatorMaxTemp(temp) {
+            console.log("Accumulator temp: ", temp);
+        }
+        function newAccumulatorCurrent(current) {
+            console.log("Accumulator Current: ", temp);
+        }
+        function newAccumulatorInstVoltage(voltage) {
+            battery_voltage_text.text = `Accumulator Voltage: ${voltage.toFixed(1)}`
+        }
+        function newAccumulatorOpenVoltage(voltage) {
+            console.log("Accumulator Voltage: ", voltage);
+        }
+        function newAccumulatorSOC(percent) {
+            battery_percent_text.text = `Accumulator %: ${percent.toFixed(1)}`
         }
     }
 }

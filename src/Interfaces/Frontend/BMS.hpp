@@ -13,8 +13,12 @@ class BMS : public QObject, public CAN::FakeInterface {
     ~BMS() = default;
 
   signals:
-    void newVoltage(float voltage);
-    void newBatteryPercent(float percent);
+    void newBMSTemp(float temp);
+    void newAccumulatorMaxTemp(float temp);
+    void newAccumulatorCurrent(float current);
+    void newAccumulatorInstVoltage(float voltage);
+    void newAccumulatorOpenVoltage(float voltage);
+    void newAccumulatorSOC(float percent);
 
   private:
     void generateValues();
