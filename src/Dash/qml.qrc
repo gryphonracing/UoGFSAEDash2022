@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>SpeedometerBackground.png</file>
+        <file>SpeedometerSemiCircle.png</file>
     </qresource>
 </RCC>
