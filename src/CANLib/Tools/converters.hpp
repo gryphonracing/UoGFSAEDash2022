@@ -20,3 +20,24 @@ float convertToUnsigned(uint8_t low_byte, uint8_t high_byte) {
     uint16_t combined = combineTo<uint16_t>(low_byte, high_byte);
     return static_cast<float>(combined) / ratio;
 }
+
+float toCelsius(uint8_t low_byte, uint8_t high_byte);
+float toLowVoltage(uint8_t low_byte, uint8_t high_byte);
+float toNm(uint8_t low_byte, uint8_t high_byte);
+float toHighVoltage(uint8_t low_byte, uint8_t high_byte);
+float toAmps(uint8_t low_byte, uint8_t high_byte);
+float toDegrees(uint8_t low_byte, uint8_t high_byte);
+int16_t toRPM(uint8_t low_byte, uint8_t high_byte);
+bool toBool(uint8_t byte);
+float toHz(uint8_t low_byte, uint8_t high_byte);
+float tokW(uint8_t low_byte, uint8_t high_byte);
+float toWebers(uint8_t low_byte, uint8_t high_byte);
+
+// either 100 or 10000 scale
+float toProportionalGain100(uint8_t low_byte, uint8_t high_byte);
+float toProportionalGain10000(uint8_t low_byte, uint8_t high_byte);
+float toIntegralGain(uint8_t low_byte, uint8_t high_byte);
+float toDerivativeGain(uint8_t low_byte, uint8_t high_byte);
+float toLowpassFilterGain(uint8_t low_byte, uint8_t high_byte);
+uint16_t toCount(uint8_t low_byte, uint8_t high_byte);
+float toPSI(uint8_t low_byte, uint8_t high_byte);

@@ -8,8 +8,10 @@ class MotorController : public QObject, public CAN::Interface {
     Q_OBJECT
   public:
     MotorController(QObject* parent = nullptr) : QObject(parent) {
-        this->CAN::Interface::startReceiving(
-            "can0", MotorController::filters, MotorController::timeout_ms);
+        this->CAN::Interface::startReceiving("can0",
+                                             MotorController::filters,
+                                             MotorController::num_of_filters,
+                                             MotorController::timeout_ms);
     }
     ~MotorController() = default;
 
@@ -26,15 +28,16 @@ class MotorController : public QObject, public CAN::Interface {
     void newTimeout() override;
 
   private:
-    static constexpr std::array<can_filter, 2> filters{
-        {{
-             0x000000A0,
-             0xFFFFFFF0 // Grab all messages from 0xA0 to 0xAF
-         },
-         {
-             0x000000B0,
-             0xFFFFFFFF // Grab all messages from 0xB0
-         }}};
+    static constexpr size_t num_of_filters = 2;
+    inline static can_filter filters[num_of_filters] = {
+        {
+            0x0A0,
+            0x7F0 // Grab all messages from 0xA0 to 0xAF
+        },
+        {
+            0x0B0,
+            0x7FF // Grab all messages from 0xB0
+        }};
 
     static constexpr uint32_t timeout_ms = 500;
 };

@@ -11,6 +11,20 @@
 
 using namespace CAN;
 
+
+RetCode Interface::startReceiving(const char* canbus_interface_name,
+                        can_filter* filters,
+                        const size_t num_of_filters,
+                        uint32_t read_timeout_ms) {
+    if (this->openSocket(canbus_interface_name, filters, num_of_filters, read_timeout_ms) !=
+        RetCode::Success) {
+        return RetCode::SocketErr;
+    }
+
+    m_reading_thread = std::thread(&Interface::readLoop, this);
+    return RetCode::Success;
+}
+
 void Interface::readLoop() {
     can_frame frame = {};
     while (!this->m_should_exit) {
@@ -38,7 +52,7 @@ void Interface::stopReceiving() {
 }
 
 RetCode Interface::openSocket(const char* canbus_interface_name,
-                              const can_filter* filters,
+                              can_filter* filters,
                               size_t filter_count,
                               uint32_t read_timeout_ms) {
     m_socket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
@@ -53,7 +67,7 @@ RetCode Interface::openSocket(const char* canbus_interface_name,
 
     if (filter_count > 0) {
         if (setsockopt(
-                m_socket, SOL_CAN_RAW, CAN_RAW_FILTER, filters, sizeof(can_filter) * filter_count) <
+                m_socket, SOL_CAN_RAW, CAN_RAW_FILTER, filters, filter_count * sizeof(can_filter)) <
             0) {
             return RetCode::SocketErr;
         }

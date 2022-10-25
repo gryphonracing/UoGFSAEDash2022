@@ -8,7 +8,7 @@ using namespace CAN::Interfaces;
 
 void ECU2019::startReceiving() {
     this->Interface::startReceiving(
-        "can0", ECU2019::filters, ECU2019::timeout_ms); // Get everything
+        "can0", ECU2019::filters, ECU2019::num_of_filters, ECU2019::timeout_ms);
 }
 
 void ECU2019::newFrame(const can_frame& frame) {
