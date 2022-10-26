@@ -21,6 +21,7 @@ if (${BUILD_FRONTEND})
         target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Frontend)
     endif()
     target_link_libraries(CANInterfaces PUBLIC qt::qt)
+    set_target_properties(CANInterfaces PROPERTIES AUTOUIC ON AUTOMOC ON AUTORCC ON)
 endif()
 
 if (${BUILD_BACKEND})
@@ -34,4 +35,5 @@ if (${BUILD_BACKEND})
 endif()
 
 set_target_properties(CANInterfaces PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<0:>)
+target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(CANInterfaces PUBLIC fmt::fmt CANLib)

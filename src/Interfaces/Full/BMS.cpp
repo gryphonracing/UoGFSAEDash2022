@@ -11,6 +11,7 @@ void BMS::newFrame(const can_frame& frame) {
                "0x{:02X} 0x{:02X} 0x{:02X} 0x{:02X} 0x{:02X}\n",
                CAN::frameId(frame),
                CAN::frameFormat(frame) == CanFormat::Extended,
+               CAN::isRemoteTransmissionRequest(frame),
                CAN::isError(frame),
                frame.data[0],
                frame.data[1],

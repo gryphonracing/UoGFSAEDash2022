@@ -8,11 +8,12 @@ ApplicationWindow {
     width: 400
     height: 200
     title: "GRC Dash"
-    maximumHeight: height
-    maximumWidth: width
+    maximumHeight: 200
+    maximumWidth: 400
+    flags: Qt.Window // | Qt.FramelessWindowHint add when final project is reached.
 
-    minimumHeight: height
-    minimumWidth: width
+    minimumHeight: 200
+    minimumWidth: 400
     Column {
         Text {
             id: rpm_text_text
