@@ -97,20 +97,7 @@ ApplicationWindow {
         }
       }
 
-      // //Battery image
-      // Image {
-      //   id: battery_image
-      //   source: "images/Battery"
-      //   anchors{
-      //     bottom:parent.bottom
-      //     left: parent.left
-      //     right: parent.horizontalCenter
-      //     top:speedometer_image.bottom
-      //     topMargin: -.10*parent.height
-      //     margins: 10
-      //     rightMargin: 40
-      //   }
-      // }
+      //Battery
       Rectangle {
         color: "white"
         height:main.height/5
@@ -118,8 +105,8 @@ ApplicationWindow {
         anchors{
           bottom: parent.bottom
           left:parent.left
-          right:parent.horizontalCenter
-          margins:10
+          right:parent.right
+          margins:20
         }
 
         Rectangle {
@@ -137,7 +124,6 @@ ApplicationWindow {
             id: battery_bar
             color: "green"
             radius:height/14
-            width: 20
             anchors{
               top: parent.top
               bottom: parent.bottom
@@ -148,28 +134,17 @@ ApplicationWindow {
 
           Image{
             source: "images/BatterySymbol"
-            height: 20
+            width: 20
+            height: 2*width
             anchors{
               bottom: parent.bottom
               left: parent.left
+              margins:10
             }
           }
         }
 
 
-      }
-
-      //Battery reading
-      Rectangle{
-        color: "orange"
-        anchors{
-          fill: battery_image
-          leftMargin: 17
-          rightMargin: 35
-          topMargin: 13
-          bottomMargin: 13
-        }
-        radius: 10
       }
     }
 
@@ -335,15 +310,11 @@ ApplicationWindow {
     function onNewBatteryPercent(percent)
     {
       battery_percent_text.text = `Battery: ${percent.toFixed(1)}%`
-      battery_bar.width = 210/100*percent
+      battery_bar.width = (battery_bar.parent.width-10)/100*percent
 
-      if (percent >= (200/3))
+      if (percent >= (100/3))
       {
         battery_bar.color = "green"
-      }
-      else if (percent >= 100/3)
-      {
-        battery_bar.color = "yellow"
       }
       else
       {
