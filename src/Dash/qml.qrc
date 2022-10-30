@@ -1,7 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>SpeedometerBackground.png</file>
-        <file>SpeedometerSemiCircle.png</file>
+    </qresource>
+
+    <qresource prefix="/images">
+        <file alias = "Speedometer">images/Speedometer.png</file>
+        <file alias = "Battery">images/Battery.png</file>
+        <file alias = "BatterySymbol">images/BatterySymbol.png</file>
     </qresource>
 </RCC>
