@@ -16,7 +16,7 @@ target_compile_definitions(GryphonDash PRIVATE ROOT_SOURCE_PATH="${CMAKE_CURRENT
 target_include_directories(GryphonDash PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
-target_link_libraries(GryphonDash PRIVATE fmt::fmt qt::qt RuntimeQml CANInterfaces)
+target_link_libraries(GryphonDash PRIVATE fmt::fmt qt::qt runtimeqml::runtimeqml CANInterfaces)
 
 # TODO: Add the deployment for linux
 if(WIN32)
