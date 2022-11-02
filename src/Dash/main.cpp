@@ -6,7 +6,7 @@
 #include <MotorController.hpp>
 
 #ifdef QT_DEBUG
-#include <RuntimeQml.hpp>
+#include <runtimeqml.hpp>
 #endif
 
 int main(int argc, char* argv[]) {

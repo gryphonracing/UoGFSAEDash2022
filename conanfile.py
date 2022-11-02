@@ -1,5 +1,5 @@
 from conans import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
 from conan.tools.layout import cmake_layout
 from conan.tools.build import cross_building
 from conans.errors import ConanInvalidConfiguration
@@ -23,7 +23,7 @@ class GRCDash(ConanFile):
         "dev": "full"
     }
 
-    generators = "CMakeDeps", "virtualrunenv", "qt"
+    generators = "virtualrunenv", "qt"
     exports_sources = "CMakeLists.txt", "src/*"
 
     def imports(self):
@@ -45,8 +45,9 @@ class GRCDash(ConanFile):
     def requirements(self):
         if self.options.dev != "back":
             self.requires("qt/6.3.1")
+            self.requires("runtimeqml/cci.20220923")
         else:
-            self.generators = "CMakeDeps", "virtualrunenv"
+            self.generators = "virtualrunenv",
         self.requires("fmt/9.0.0")
 
     def layout(self):
@@ -57,6 +58,8 @@ class GRCDash(ConanFile):
         if self.options.dev != "back":
             tc.variables["QT_BIN_PATH"] = self.deps_cpp_info["qt"].bin_paths[0].replace("\\", "/")
         tc.generate()
+        deps = CMakeDeps(self)
+        deps.generate()
 
     def build(self):
         cmake = CMake(self)

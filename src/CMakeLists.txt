@@ -7,6 +7,5 @@ if (${BUILD_BACKEND})
 endif()
 
 if (${BUILD_FRONTEND})
-    add_subdirectory(RuntimeQml)
     add_subdirectory(Dash)
 endif()
