@@ -6,6 +6,83 @@
 
 using namespace CAN;
 
+
+float MotorController::toCelsius(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<10>(low_byte, high_byte);
+}
+
+float MotorController::toCurrent(uint8_t low_byte) {
+    return convertToSigned<10>(low_byte);
+}
+
+float MotorController::toLowVoltage(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<100>(low_byte, high_byte);
+}
+
+float MotorController::toNm(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<10>(low_byte, high_byte);
+}
+
+float MotorController::toHighVoltage(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<10>(low_byte, high_byte);
+}
+
+float MotorController::toAmps(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<10>(low_byte, high_byte);
+}
+
+float MotorController::toDegrees(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<10>(low_byte, high_byte);
+}
+
+int16_t MotorController::toRPM(uint8_t low_byte, uint8_t high_byte) {
+    return combineTo<int16_t>(low_byte, high_byte);
+}
+
+bool MotorController::toBool(uint8_t byte) {
+    return static_cast<bool>(byte);
+}
+
+float MotorController::toHz(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<10>(low_byte, high_byte);
+}
+
+float MotorController::tokW(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<10>(low_byte, high_byte);
+}
+
+float MotorController::toWebers(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<1000>(low_byte, high_byte);
+}
+
+// either 100 or 10000 scale
+float MotorController::toProportionalGain100(uint8_t low_byte, uint8_t high_byte) {
+    return convertToUnsigned<100>(low_byte, high_byte);
+}
+float MotorController::toProportionalGain10000(uint8_t low_byte, uint8_t high_byte) {
+    return convertToUnsigned<10000>(low_byte, high_byte);
+}
+
+float MotorController::toIntegralGain(uint8_t low_byte, uint8_t high_byte) {
+    return convertToUnsigned<10000>(low_byte, high_byte);
+}
+
+float MotorController::toDerivativeGain(uint8_t low_byte, uint8_t high_byte) {
+    return convertToUnsigned<100>(low_byte, high_byte);
+}
+
+float MotorController::toLowpassFilterGain(uint8_t low_byte, uint8_t high_byte) {
+    return convertToUnsigned<10000>(low_byte, high_byte);
+}
+
+uint16_t MotorController::toCount(uint8_t low_byte, uint8_t high_byte) {
+    return combineTo<uint16_t>(low_byte, high_byte);
+}
+
+float MotorController::toPSI(uint8_t low_byte, uint8_t high_byte) {
+    return convertToSigned<10>(low_byte, high_byte);
+}
+
 static void registerMetatypes() {
     qRegisterMetaType<int16_t>("int16_t"); // Pass this type into qml
 }
@@ -23,12 +100,12 @@ void MotorController::newFrame(const can_frame& frame) {
     case 0x0A2: { // Temps #3 & Torque Shudder
 
         //Get coolant Temp (Signed in * 10)
-        auto coolant_temp = BMS::toCelsius(frame.data[0]);
+        auto coolant_temp = MotorController::toCelsius(frame.data[0]);
         fmt::print("Coolant Temp: {} C\n", coolant_temp);
         //emit coolant temp
 
         //Get the Motor temp
-        auto motor_temp = BMS::toCelsius(frame.data[4], frame.data[5]);
+        auto motor_temp = MotorController::toCelsius(frame.data[4], frame.data[5]);
         fmt::print("Motor Temp: {} C\n", motor_temp);
         //emit motor temp
 
