@@ -13,6 +13,7 @@ Q_CONSTRUCTOR_FUNCTION(registerMetatypes)
 
 void MotorController::newFrame(const can_frame& frame) {
     switch (CAN::frameId(frame)) {
+
         // case 0x0A0: // Temps #1
         //     break;
 
@@ -20,18 +21,37 @@ void MotorController::newFrame(const can_frame& frame) {
         //     break;
 
     case 0x0A2: { // Temps #3 & Torque Shudder
-        fmt::print("Got Temps #3\n");
+
+        //Get coolant Temp (Signed in * 10)
+        auto coolant_temp = BMS::toCelsius(frame.data[0]);
+        fmt::print("Coolant Temp: {} C\n", coolant_temp);
+        //emit coolant temp
+
+        //Get the Motor temp
+        auto motor_temp = BMS::toCelsius(frame.data[4], frame.data[5]);
+        fmt::print("Motor Temp: {} C\n", motor_temp);
+        //emit motor temp
+
+
+        /*fmt::print("Got Temps #3\n");
         auto coolant_temp = toCelsius(frame.data[0], frame.data[1]);
         fmt::print("Coolant Temp: {} C\n", coolant_temp);
         emit newCoolantTemp(coolant_temp);
         fmt::print("Hot Spot Temp: {} C\n", toCelsius(frame.data[2], frame.data[3]));
         fmt::print("Motor Temp: {} C\n", toCelsius(frame.data[4], frame.data[5]));
         fmt::print("Torque Shudder: {} Nm\n", toNm(frame.data[6], frame.data[7]));
+        */
+        break;
+    }
+
+    //Case 0x0A3: // Our custome data from the gear box, 12V battery, and anything else we purpose build
+    case 0x0A3: {
         break;
     }
 
         // case 0x0A3: // Analog Status
         //     break;
+        //We will use these so set it up
 
     case 0x0A4: { // Digital Input Status
         fmt::print("Got Digital Input\n");
