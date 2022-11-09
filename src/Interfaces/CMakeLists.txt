@@ -9,6 +9,7 @@ if (${BUILD_FRONTEND})
             Full/BMS.cpp
         )
         target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Full)
+        target_link_libraries(CANInterfaces PUBLIC CANLib)
     else()
         target_sources(CANInterfaces PUBLIC
             Frontend/FakeInterface.hpp

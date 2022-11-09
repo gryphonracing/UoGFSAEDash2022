@@ -14,9 +14,19 @@ class BMS : public QObject, public CAN::Interface {
 
     ~BMS() = default;
 
+
+    float toCelsius(uint8_t byte);
+    float toStateOfCharge(uint8_t byte);
+    float toCurrent(uint8_t low_byte, uint8_t high_byte);
+    float toVoltage(uint8_t low_byte, uint8_t high_byte);
+
   signals:
-    void newVoltage(float voltage);
-    void newBatteryPercent(float percent);
+    void newBMSTemp(float temp);
+    void newAccumulatorMaxTemp(float temp);
+    void newAccumulatorCurrent(float current);
+    void newAccumulatorInstVoltage(float voltage);
+    void newAccumulatorOpenVoltage(float voltage);
+    void newAccumulatorSOC(float percent);
 
   private:
     // As of now, newFrame and newError should be extremely fast functions before emitting more
@@ -26,7 +36,7 @@ class BMS : public QObject, public CAN::Interface {
     void newTimeout() override;
 
   private:
-    static constexpr size_t num_of_filters = 2;
+    static constexpr size_t num_of_filters = 3;
     inline static can_filter filters[num_of_filters] = {
         {
             0x7EB,
@@ -35,6 +45,10 @@ class BMS : public QObject, public CAN::Interface {
         {
             0x0C0, // Grab 0x0C0 and 0x0C1 for broadcast messages
             0x7FE
+        },
+        {
+            0x0C2, // Grab 0x0C2 for broadcast messages
+            0x7FF
         }
     };
 

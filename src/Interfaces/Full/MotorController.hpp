@@ -15,9 +15,32 @@ class MotorController : public QObject, public CAN::Interface {
     }
     ~MotorController() = default;
 
+    float toCelsius(uint8_t low_byte, uint8_t high_byte);
+    float toLowVoltage(uint8_t low_byte, uint8_t high_byte);
+    float toNm(uint8_t low_byte, uint8_t high_byte);
+    float toHighVoltage(uint8_t low_byte, uint8_t high_byte);
+    float toAmps(uint8_t low_byte, uint8_t high_byte);
+    float toDegrees(uint8_t low_byte, uint8_t high_byte);
+    int16_t toRPM(uint8_t low_byte, uint8_t high_byte);
+    bool toBool(uint8_t byte);
+    float toHz(uint8_t low_byte, uint8_t high_byte);
+    float tokW(uint8_t low_byte, uint8_t high_byte);
+    float toWebers(uint8_t low_byte, uint8_t high_byte);
+
+    // either 100 or 10000 scale
+    float toProportionalGain100(uint8_t low_byte, uint8_t high_byte);
+    float toProportionalGain10000(uint8_t low_byte, uint8_t high_byte);
+    float toIntegralGain(uint8_t low_byte, uint8_t high_byte);
+    float toDerivativeGain(uint8_t low_byte, uint8_t high_byte);
+    float toLowpassFilterGain(uint8_t low_byte, uint8_t high_byte);
+    uint16_t toCount(uint8_t low_byte, uint8_t high_byte);
+    float toPSI(uint8_t low_byte, uint8_t high_byte);
+
   signals:
-    void newRPM(int16_t rpm);
+    void newMotorRPM(int16_t rpm);
+    void newMotorTemp(int16_t temp);
     void newCoolantTemp(float temp);
+    void new12VVoltage(float voltage);
     void newOilTemp(float temp);
 
   private:
