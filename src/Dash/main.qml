@@ -16,6 +16,11 @@ ApplicationWindow {
     minimumWidth: width
     Column {
         Text {
+            id: motor_temp_text
+            font.pointSize: 20
+            text: ""
+        }
+        Text {
             id: rpm_text_text
             font.pointSize: 20
             text: ""
@@ -74,8 +79,14 @@ ApplicationWindow {
 
     Connections {
         target: MotorController
+        function onNewMotorTemp(temp) {
+            motor_temp_text.text = `Motor Temp: ${temp.toFixed(1)}`
+        }
         function onNewMotorRPM(rpm) {
             rpm_text_text.text = `RPM: ${rpm}`
+        }
+        function onNew12VVoltage(voltage) {
+            battery_voltage_text.text = `12V Voltage: ${voltage.toFixed(1)}`
         }
         function onNewCoolantTemp(coolant_temp) {
             coolant_temp_text.text = `Coolant Temp: ${coolant_temp.toFixed(1)}`

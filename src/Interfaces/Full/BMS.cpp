@@ -33,8 +33,6 @@ void BMS::newFrame(const can_frame& frame) {
     case 0x0C0: {
         auto pack_open_voltage = BMS::toVoltage(frame.data[0], frame.data[1]);
         auto pack_state_of_charge = BMS::toStateOfCharge(frame.data[2]);
-        fmt::print("pack_open_voltage {}\n", pack_open_voltage);
-        fmt::print("pack_state_of_charge {}\n", pack_state_of_charge);
         emit newAccumulatorOpenVoltage(pack_open_voltage);
         emit newAccumulatorSOC(pack_state_of_charge);
         break;
@@ -44,8 +42,6 @@ void BMS::newFrame(const can_frame& frame) {
     case 0x0C1: {
         auto instant_voltage = toVoltage(frame.data[0], frame.data[1]);
         auto pack_current = toCurrent(frame.data[2], frame.data[3]);
-        fmt::print("instant_voltage {}\n", instant_voltage);
-        fmt::print("pack_current {}\n", pack_current);
         emit newAccumulatorInstVoltage(instant_voltage);
         emit newAccumulatorCurrent(pack_current);
         break;
@@ -55,8 +51,6 @@ void BMS::newFrame(const can_frame& frame) {
     case 0x0C2: {
         auto max_accumulator_temp = toCelsius(frame.data[0]);
         auto internal_temp = toCelsius(frame.data[1]);
-        fmt::print("max acc temp {}\n", max_accumulator_temp);
-        fmt::print("internal_temp {}\n", internal_temp);
         emit newAccumulatorMaxTemp(max_accumulator_temp);
         emit newBMSTemp(internal_temp);
         break;
