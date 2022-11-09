@@ -10,6 +10,7 @@ using namespace CAN;
 float MotorController::toCelsius(uint8_t low_byte, uint8_t high_byte) {
     return convertToSigned<10>(low_byte, high_byte);
 }
+
 float MotorController::toLowVoltage(uint8_t low_byte, uint8_t high_byte) {
     return convertToSigned<100>(low_byte, high_byte);
 }
@@ -142,6 +143,19 @@ void MotorController::newFrame(const can_frame& frame) {
     }
 
     default:
+        // fmt::print("ID: 0x{:02X}, Ext: {}, RTR: {}, Err: {}, Payload: 0x{:02X} 0x{:02X} 0x{:02X} "
+        //            "0x{:02X} 0x{:02X} 0x{:02X} 0x{:02X} 0x{:02X}\n",
+        //            CAN::frameId(frame),
+        //            CAN::frameFormat(frame) == CanFormat::Extended,
+        //            CAN::isError(frame),
+        //            frame.data[0],
+        //            frame.data[1],
+        //            frame.data[2],
+        //            frame.data[3],
+        //            frame.data[4],
+        //            frame.data[5],
+        //            frame.data[6],
+        //            frame.data[7]);
         break;
     }
 }
