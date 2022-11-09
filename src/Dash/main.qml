@@ -5,15 +5,15 @@ import CAN.BMS
 
 ApplicationWindow {
     visible: true
-    width: 400
-    height: 200
+    width: 800
+    height: 480
     title: "GRC Dash"
-    maximumHeight: 200
-    maximumWidth: 400
+    maximumHeight: height
+    maximumWidth: width
     flags: Qt.Window // | Qt.FramelessWindowHint add when final project is reached.
 
-    minimumHeight: 200
-    minimumWidth: 400
+    minimumHeight: height
+    minimumWidth: width
     Column {
         Text {
             id: rpm_text_text
@@ -40,7 +40,33 @@ ApplicationWindow {
         }
 
         Text {
-            id: battery_percent_text
+            id: bmsTemp
+            font.pointSize: 20
+            text: ""
+        }
+        Text {
+            id: accumulatorCurrent
+            font.pointSize: 20
+            text: ""
+        }
+        Text {
+            id: accumulatorMaxTemp
+            font.pointSize: 20
+            text: ""
+        }
+        Text {
+            id: accumulatorInstVoltage
+            font.pointSize: 20
+            text: ""
+        }
+        Text {
+            id: accumulatorOpenVoltage
+            font.pointSize: 20
+            text: ""
+        }
+
+        Text {
+            id: accumulatorSOC
             font.pointSize: 20
             text: ""
         }
@@ -61,23 +87,23 @@ ApplicationWindow {
 
     Connections {
         target: BMS
-        function newBMSTemp(temp) {
-            console.log("BMS temp: ", temp);
+        function onNewBMSTemp(temp) {
+            bmsTemp.text = `BMS Temp: ${temp.toFixed(1)}`
         }
-        function newAccumulatorMaxTemp(temp) {
-            console.log("Accumulator temp: ", temp);
+        function onNewAccumulatorMaxTemp(temp) {
+            accumulatorMaxTemp.text = `Accumulator Max Temp: ${temp.toFixed(1)}`
         }
-        function newAccumulatorCurrent(current) {
-            console.log("Accumulator Current: ", temp);
+        function onNewAccumulatorCurrent(current) {
+            accumulatorCurrent.text = `Accumulator Current: ${current.toFixed(1)}`
         }
-        function newAccumulatorInstVoltage(voltage) {
-            battery_voltage_text.text = `Accumulator Voltage: ${voltage.toFixed(1)}`
+        function onNewAccumulatorInstVoltage(voltage) {
+            accumulatorInstVoltage.text = `Accumulator Inst Voltage: ${voltage.toFixed(1)}`
         }
-        function newAccumulatorOpenVoltage(voltage) {
-            console.log("Accumulator Voltage: ", voltage);
+        function onNewAccumulatorOpenVoltage(voltage) {            
+            accumulatorOpenVoltage.text = `Accumulator Open Voltage: ${voltage.toFixed(1)}`
         }
-        function newAccumulatorSOC(percent) {
-            battery_percent_text.text = `Accumulator %: ${percent.toFixed(1)}`
+        function onNewAccumulatorSOC(percent) {
+            accumulatorSOC.text = `Accumulator %: ${percent.toFixed(1)}`
         }
     }
 }
