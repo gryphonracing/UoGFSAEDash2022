@@ -37,8 +37,10 @@ class MotorController : public QObject, public CAN::Interface {
     float toPSI(uint8_t low_byte, uint8_t high_byte);
 
   signals:
-    void newRPM(int16_t rpm);
+    void newMotorRPM(int16_t rpm);
+    void newMotorTemp(int16_t temp);
     void newCoolantTemp(float temp);
+    void new12VVoltage(float voltage);
     void newOilTemp(float temp);
 
   private:

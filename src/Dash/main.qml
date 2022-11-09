@@ -48,7 +48,7 @@ ApplicationWindow {
 
     Connections {
         target: MotorController
-        function onNewRPM(rpm) {
+        function onNewMotorRPM(rpm) {
             rpm_text_text.text = `RPM: ${rpm}`
         }
         function onNewCoolantTemp(coolant_temp) {
@@ -56,13 +56,6 @@ ApplicationWindow {
         }
         function onNewOilTemp(oil_temp) {
             oil_temp_text.text = `Oil Temp: ${oil_temp.toFixed(1)}`
-        }
-        function onNewMotorGear(gear) {
-            if (gear == MotorGearClass.Drive){
-                console.log("Car is in Drive")
-            }else if (gear == MotorGearClass.Park){
-                console.log("Car is in Park");
-            }
         }
     }
 
