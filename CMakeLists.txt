@@ -7,6 +7,7 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}, Flags: ${CMAKE_CXX_FLAGS}")
 
 if(${BUILD_FRONTEND})
     find_package(Qt6 CONFIG REQUIRED)
+    find_package(runtimeqml CONFIG REQUIRED)
 endif()
 
 find_package(fmt CONFIG REQUIRED)

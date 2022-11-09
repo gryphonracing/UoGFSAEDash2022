@@ -74,7 +74,7 @@ ApplicationWindow {
 
     Connections {
         target: MotorController
-        function onNewRPM(rpm) {
+        function onNewMotorRPM(rpm) {
             rpm_text_text.text = `RPM: ${rpm}`
         }
         function onNewCoolantTemp(coolant_temp) {
@@ -104,6 +104,7 @@ ApplicationWindow {
         }
         function onNewAccumulatorSOC(percent) {
             accumulatorSOC.text = `Accumulator %: ${percent.toFixed(1)}`
+
         }
     }
 }
