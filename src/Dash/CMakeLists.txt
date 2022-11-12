@@ -11,11 +11,12 @@ set(RESOURCE_FILES
 
 add_executable(GryphonDash ${CODE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})
 set_target_properties(GryphonDash PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/$<0:>)
+set_target_properties(GryphonDash PROPERTIES AUTOUIC ON AUTOMOC ON AUTORCC ON)
 target_compile_definitions(GryphonDash PRIVATE ROOT_SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(GryphonDash PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
-target_link_libraries(GryphonDash PRIVATE fmt::fmt qt::qt RuntimeQml CANInterfaces)
+target_link_libraries(GryphonDash PRIVATE fmt::fmt qt::qt runtimeqml::runtimeqml CANInterfaces)
 
 # TODO: Add the deployment for linux
 if(WIN32)

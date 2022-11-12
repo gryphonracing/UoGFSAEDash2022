@@ -5,10 +5,16 @@ import CAN.BMS
 
 ApplicationWindow {
   id: application_window
-  visible: true
-  width: 800
-  height: width * 10 / 16
-  title: "GRC Dash"
+    visible: true
+    width: 800
+    height: 480
+    title: "GRC Dash"
+    maximumHeight: height
+    maximumWidth: width
+    minimumHeight: height
+    minimumWidth: width
+    flags: Qt.Window // | Qt.FramelessWindowHint add when final project is reached.
+
 
   Rectangle {
     id: main
@@ -148,14 +154,6 @@ ApplicationWindow {
       }
     }
 
-    /**
-    Text {
-      id: gear_mode_text_text
-      font.pointSize: 20
-      text: "Gear Mode:"
-    }
-    */
-
     //Div contains all temperature related info
     Rectangle {
       id: temps
@@ -284,7 +282,7 @@ ApplicationWindow {
 
   Connections {
     target: MotorController
-    function onNewRPM(rpm)
+    function onNewMotorRPM(rpm)
     {
       var speed = 160+rpm%160                    //Speed in km/h is calculated here
       var maxSpeed = 160
@@ -303,11 +301,15 @@ ApplicationWindow {
     {
       oil_temp_text.text = `Oil Temp: ${oil_temp.toFixed(1)}`
     }
+    function onNewMotorTemp(temp) {
+    }
+    function onNew12VVoltage(voltage) {
+    }
   }
 
   Connections {
     target: BMS
-    function onNewBatteryPercent(percent)
+    function onNewAccumulatorSOC(percent)
     {
       battery_percent_text.text = `Battery: ${percent.toFixed(1)}%`
       battery_bar.width = (battery_bar.parent.width-10)/100*percent
@@ -321,5 +323,15 @@ ApplicationWindow {
         battery_bar.color = "red"
       }
     }
+        function onNewBMSTemp(temp) {
+        }
+        function onNewAccumulatorMaxTemp(temp) {
+        }
+        function onNewAccumulatorCurrent(current) {
+        }
+        function onNewAccumulatorInstVoltage(voltage) {
+        }
+        function onNewAccumulatorOpenVoltage(voltage) {            
+        }
   }
 }

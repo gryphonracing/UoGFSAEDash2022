@@ -2,23 +2,22 @@
 #include <QQmlApplicationEngine>
 #include <fmt/core.h>
 
-#include <MotorController.hpp>
 #include <BMS.hpp>
+#include <MotorController.hpp>
 
 #ifdef QT_DEBUG
-#include <RuntimeQml.hpp>
+#include <runtimeqml.hpp>
 #endif
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     MotorController* motor_controller = new MotorController(); // Should be before QQml engine
-    BMS* bms = new BMS(); // Should be before QQml engine
+    BMS* bms = new BMS();                                      // Should be before QQml engine
     QQmlApplicationEngine engine;
 
     qmlRegisterSingletonInstance<MotorController>(
         "CAN.MotorController", 1, 0, "MotorController", motor_controller);
-    qmlRegisterSingletonInstance<BMS>(
-        "CAN.BMS", 1, 0, "BMS", bms);
+    qmlRegisterSingletonInstance<BMS>("CAN.BMS", 1, 0, "BMS", bms);
 #ifdef QT_DEBUG
     RuntimeQml* rt = new RuntimeQml(&engine);
     rt->parseQrc(ROOT_SOURCE_PATH "/qml.qrc");

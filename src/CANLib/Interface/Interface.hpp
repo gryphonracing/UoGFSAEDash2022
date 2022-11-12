@@ -16,17 +16,10 @@ class Interface {
     virtual ~Interface();
 
   protected:
-    template <size_t N>
     RetCode startReceiving(const char* canbus_interface_name,
-                           const std::array<can_filter, N>& filters uint32_t read_timeout_ms) {
-        if (this->openSocket(canbus_interface_name, filters.data(), N, read_timeout_ms) !=
-            RetCode::Success) {
-            return RetCode::SocketErr;
-        }
-
-        m_reading_thread = std::thread(&Interface::readLoop, this);
-        return RetCode::Success;
-    }
+                           can_filter* filters,
+                           const size_t num_of_filters,
+                           uint32_t read_timeout_ms);
     void stopReceiving();
 
     // As of now, newFrame, newError and newTimeout should be extremely fast functions before
@@ -69,7 +62,7 @@ class Interface {
 
   private:
     RetCode openSocket(const char* canbus_interface_name,
-                       const can_filter* filters,
+                       can_filter* filters,
                        size_t filter_count,
                        uint32_t read_timeout_ms);
     RetCode read(can_frame& frame);

@@ -1,10 +1,8 @@
 set(CODE_FILES
     BusDump.cpp
-    Dump.cpp
 )
 
 set(HEADER_FILES
-    Dump.hpp
 )
 
 add_executable(BusDump ${CODE_FILES} ${HEADER_FILES})

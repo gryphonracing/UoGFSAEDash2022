@@ -1,17 +1,11 @@
 from conans import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
 from conan.tools.layout import cmake_layout
 from conan.tools.build import cross_building
 from conans.errors import ConanInvalidConfiguration
 import os
 
 class GRCDash(ConanFile):
-    scm = {
-        "type": "git",
-        "url":"auto",
-        "revision": "auto"
-    }
-
     name = "GRCDash"
     version = "0.1.0"
     description = "Gryphon Racing Club Dash"
@@ -29,11 +23,11 @@ class GRCDash(ConanFile):
         "dev": "full"
     }
 
-    generators = "CMakeDeps", "qt"
+    generators = "virtualrunenv", "qt"
     exports_sources = "CMakeLists.txt", "src/*"
 
     def imports(self):
-        self.copy("*.dll", "build/bin", "bin")
+        self.copy("*.dll", dst=os.path.join(self.build_folder, "bin"), src="@bindirs")
 
     def validate(self):
         if self.settings.os != "Linux" and self.options.dev != "front":
@@ -51,8 +45,9 @@ class GRCDash(ConanFile):
     def requirements(self):
         if self.options.dev != "back":
             self.requires("qt/6.3.1")
+            self.requires("runtimeqml/cci.20220923")
         else:
-            self.generators = "CMakeDeps",
+            self.generators = "virtualrunenv",
         self.requires("fmt/9.0.0")
 
     def layout(self):
@@ -63,6 +58,8 @@ class GRCDash(ConanFile):
         if self.options.dev != "back":
             tc.variables["QT_BIN_PATH"] = self.deps_cpp_info["qt"].bin_paths[0].replace("\\", "/")
         tc.generate()
+        deps = CMakeDeps(self)
+        deps.generate()
 
     def build(self):
         cmake = CMake(self)
