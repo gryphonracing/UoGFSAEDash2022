@@ -4,14 +4,6 @@
 
 #include <FakeInterface.hpp>
 
-class MotorGearClass {
-    Q_GADGET
-  public:
-    explicit MotorGear(){};
-
-    enum Value { Null, Drive, Park };
-    Q_ENUM(Value)
-};
 
 typedef MotorGearClass::Value MotorGear;
 
@@ -24,11 +16,10 @@ class MotorController : public QObject, public CAN::FakeInterface {
     ~MotorController() = default;
 
   signals:
+    void newMotorRPM(float rpm);
+    void newMotorTemp(float temp);
     void newCoolantTemp(float temp);
     void newOilTemp(float temp);
-    void newMotorTemp(float temp);
-    void newMotorRPM(int16_t rpm);
-    void newMotorGear(MotorGear gear);
     void new12VVoltage(float voltage);
 
   private:
