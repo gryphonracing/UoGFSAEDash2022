@@ -6,8 +6,8 @@ import CAN.BMS
 ApplicationWindow {
   id: application_window
   visible: true
-  width: (height/6)*10
-  height: 480
+  width: 800
+  height: width * 10/16
   title: "GRC Dash"
   color: "white"
   maximumHeight: height
