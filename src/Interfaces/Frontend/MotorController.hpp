@@ -5,8 +5,6 @@
 #include <FakeInterface.hpp>
 
 
-typedef MotorGearClass::Value MotorGear;
-
 class MotorController : public QObject, public CAN::FakeInterface {
     Q_OBJECT
   public:

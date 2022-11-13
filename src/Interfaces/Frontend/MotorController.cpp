@@ -12,16 +12,17 @@ void MotorController::generateValues() {
     emit newMotorTemp(temps);
     emit new12VVoltage(voltage);
 
+
     rpm += 1.0f;
     if (rpm >= 32767) {
         rpm = 0;
     }
     temps += 0.1f;
-    if (coolant_temp >= 100) {
-        coolant_temp = -100;
+    if (temps >= 100) {
+        temps = -100;
     }
     voltage += 0.15f;
     if (voltage >= 14.5f) {
-        oil_temp = 8.00f;
+        voltage = 8.00f;
     }
 }

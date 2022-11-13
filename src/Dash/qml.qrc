@@ -7,5 +7,6 @@
         <file alias = "Speedometer">images/Speedometer.png</file>
         <file alias = "Battery">images/Battery.png</file>
         <file alias = "BatterySymbol">images/BatterySymbol.png</file>
+        <file alias = "Logo">images/Logo.png</file>
     </qresource>
 </RCC>
