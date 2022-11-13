@@ -6,9 +6,10 @@ import CAN.BMS
 ApplicationWindow {
   id: application_window
   visible: true
-  width: 800
+  width: (height/6)*10
   height: 480
   title: "GRC Dash"
+  color: "white"
   maximumHeight: height
   maximumWidth: width
   minimumHeight: height
@@ -22,13 +23,14 @@ ApplicationWindow {
     height: parent.height
     anchors{
       fill: parent
+      margins: main.height/30
     }
-    color: "blue"
+    color: "white"
 
     //Oil and Coolant
     Rectangle{
       id:oilAndCoolantDiv
-      width: parent.width/16*4.5
+      width: parent.width/16*5
       height: parent.height
       anchors{
         left: parent.left
@@ -62,7 +64,7 @@ ApplicationWindow {
         //Oil Temp Value
         Text {
           id: oilTempValue
-          font.pointSize: main.height/10
+          font.pointSize: main.height/8
           text: ""
           color: "black"
           font.bold: true
@@ -86,7 +88,7 @@ ApplicationWindow {
         //Coolant Temp Text
         Text{
           id: coolantTempText
-          font.pointSize: main.height/25
+          font.pointSize: main.height/20
           text:"Coolant Temp"
           color: "black"
           font.bold: true
@@ -98,7 +100,7 @@ ApplicationWindow {
         //Coolant Temp Value
         Text {
           id: coolantTempValue
-          font.pointSize: main.height/10
+          font.pointSize: main.height/8
           text: ""
           color: "black"
           font.bold: true
@@ -113,7 +115,7 @@ ApplicationWindow {
     //Accum and Motor
     Rectangle{
       id:accumAndMotorDiv
-      width: parent.width/16*4.5
+      width: parent.width/16*5
       height: parent.height
       anchors{
         right: parent.right
@@ -130,13 +132,11 @@ ApplicationWindow {
           right: parent.right
           left: parent.left
         }
-
-
         //accum Temp Text
         Text{
           id: accumTempText
-          font.pointSize: main.height/25
-          text:"Coolant Temp"
+          font.pointSize: main.height/20
+          text:"Accum Temp"
           color: "black"
           font.bold: true
           anchors{
@@ -147,7 +147,7 @@ ApplicationWindow {
         //accum Temp Value
         Text {
           id: accumTempValue
-          font.pointSize: main.height/10
+          font.pointSize: main.height/8
           text: ""
           color: "black"
           font.bold: true
@@ -156,10 +156,7 @@ ApplicationWindow {
             horizontalCenter: parent.horizontalCenter
           }
         }
-
-
       }
-
       //Motor Temp Div
       Rectangle{
         anchors{
@@ -168,12 +165,11 @@ ApplicationWindow {
           right: parent.right
           left: parent.left
         }
-
         //Motor Temp Text
         Text{
           id: motorTempText
-          font.pointSize: main.height/25
-          text:"Coolant Temp"
+          font.pointSize: main.height/20
+          text:"Motor Temp"
           color: "black"
           font.bold: true
           anchors{
@@ -184,7 +180,7 @@ ApplicationWindow {
         //Motor Temp Value
         Text {
           id: motorTempValue
-          font.pointSize: main.height/10
+          font.pointSize: main.height/8
           text: ""
           color: "black"
           font.bold: true
@@ -199,7 +195,7 @@ ApplicationWindow {
     //Speed
     Rectangle{
       id: speedDiv
-      width: parent.width/16*8
+      width: parent.width/16*6
       height: parent.height
       anchors{
         top: battery.bottom
@@ -212,7 +208,7 @@ ApplicationWindow {
 
       Text {
         id: speedValue
-        font.pointSize: main.height/4
+        font.pointSize: main.height/3.5
         opacity: 0.9
         font.bold: true
         color:"black"
@@ -323,21 +319,84 @@ ApplicationWindow {
     target: MotorController
     function onNewMotorRPM(rpm)
     {
-      var speed = 160+rpm%160                    //Speed in km/h is calculated here
+      var speed = rpm%120                               //Speed in km/h is calculated here
 
       speedValue.text = `${speed}`                                //Text display of speed
     }
     function onNewCoolantTemp(coolant_temp)
     {
+      //Getting positive values within the right range
+      if (coolant_temp < 0)
+      {
+        coolant_temp = 180+(coolant_temp*20%120)
+      }
+      else{coolant_temp = 180-(coolant_temp*20%120)}
+
       coolantTempValue.text = `${coolant_temp.toFixed(1)}`
+
+      //Color coding value ranges
+      if (coolant_temp < 90)
+      {
+        coolantTempValue.color="blue"
+      }
+      else if(coolant_temp > 120)
+      {
+        coolantTempValue.color="red"
+      }
+      else {
+        coolantTempValue.color="green"
+      }
     }
     function onNewOilTemp(oil_temp)
     {
+
+      //Getting positive values within the right range
+      if (oil_temp < 0)
+      {
+        oil_temp = 170+(oil_temp*25%110)
+      }
+      else{oil_temp = 170-(oil_temp*25%110)}
+
       oilTempValue.text = `${oil_temp.toFixed(1)}`
+
+      //Color coding value ranges
+      if (oil_temp < 90)
+      {
+        oilTempValue.color="blue"
+      }
+      else if(oil_temp > 120)
+      {
+        oilTempValue.color="red"
+      }
+      else {
+        oilTempValue.color="green"
+      }
+
     }
     function onNewMotorTemp(temp)
     {
+      //Getting positive values within the right range
+      if (temp < 0)
+      {
+        temp = 160+(temp*20%100)
+      }
+      else{temp = 160-(temp*20%100)}
+
       motorTempValue.text = `${temp.toFixed(1)}`
+
+      //Color coding value ranges
+      if (temp < 90)
+      {
+        motorTempValue.color="blue"
+      }
+      else if(temp > 120)
+      {
+        motorTempValue.color="red"
+      }
+      else {
+        motorTempValue.color="green"
+      }
+
     }
     function onNew12VVoltage(voltage)
     {
@@ -365,7 +424,8 @@ ApplicationWindow {
     }
     function onNewAccumulatorMaxTemp(temp)
     {
-      accumTempValue.text = `${temp.toFixed(1)}`
+      accumTempValue.text = coolantTempValue.text
+      accumTempValue.color = coolantTempValue.color
     }
     function onNewAccumulatorCurrent(current)
     {
