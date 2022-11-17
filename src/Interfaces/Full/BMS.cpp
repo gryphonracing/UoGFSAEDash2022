@@ -6,7 +6,7 @@
 
 using namespace CAN;
 
-// Will recieve data from CANbus here
+// Will receive data from CANbus here
 void BMS::newFrame(const can_frame& frame) {
     auto message = can_messages.find(CAN::frameId(frame));
     if (message == messages.end()) return; // Could not find decoding logic for message in the provided DBC
@@ -18,10 +18,10 @@ void BMS::newFrame(const can_frame& frame) {
     }
 }
 
-void BMS::newError(const can_frame&) {
-    fmt::print("BMS Error\n");
-};
+// Callback from when the CAN socket receives a CAN frame marked as an error
+// Doesn't have to be used, but must be defined
+void BMS::newError(const can_frame&) {};
 
 // Callback from when the CAN socket times out
-// Doesn't have to be used, but must be declared
+// Doesn't have to be used, but must be defined
 void BMS::newTimeout() {};
