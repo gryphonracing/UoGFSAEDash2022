@@ -4,6 +4,7 @@
 
 #include <BMS.hpp>
 #include <MotorController.hpp>
+#include <EnergyMeter.hpp>
 
 #ifdef QT_DEBUG
 #include <runtimeqml.hpp>
@@ -12,11 +13,14 @@
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     MotorController* motor_controller = new MotorController(); // Should be before QQml engine
+    EnergyMeter* energy_meter = new EnergyMeter();         // Should be before QQml engine
     BMS* bms = new BMS();                                      // Should be before QQml engine
     QQmlApplicationEngine engine;
 
     qmlRegisterSingletonInstance<MotorController>(
         "CAN.MotorController", 1, 0, "MotorController", motor_controller);
+    qmlRegisterSingletonInstance<EnergyMeter>(
+        "CAN.EnergyMeter", 1, 0, "EnergyMeter", energy_meter);
     qmlRegisterSingletonInstance<BMS>("CAN.BMS", 1, 0, "BMS", bms);
 #ifdef QT_DEBUG
     RuntimeQml* rt = new RuntimeQml(&engine);

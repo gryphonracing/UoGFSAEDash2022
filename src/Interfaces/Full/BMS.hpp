@@ -1,26 +1,12 @@
 #pragma once
 
 #include <QObject>
-#include <fstream>
-#include <unordered_map>
-#include <memory>
-#include <fmt/core.h>
-#include <Interface.hpp>
-#include <dbcppp/Network.h>
+#include <DBCInterface.hpp>
 
-class BMS : public QObject, public CAN::Interface {
+class BMS : public QObject, public CAN::DBCInterface<BMS> {
     Q_OBJECT
   public:
-    BMS(QObject* parent = nullptr) : QObject(parent)
-        , dbc_network(std::move(dbcppp::INetwork::LoadNetworkFromFile("Orion_CANBUS.dbc")[""])) {
-        this->CAN::Interface::startReceiving(
-            "can0", BMS::filters, BMS::num_of_filters, BMS::timeout_ms);
-
-        for (const dbcppp::IMessage& msg : dbc_network->Messages()) {
-            
-            can_messages.insert(std::make_pair(msg.Id(), &msg));
-        }
-        
+    BMS(QObject* parent = nullptr) : QObject(parent), DBCInterface("Orion_CANBUS.dbc") {
         can_signal_dispatch["Pack_Open_Voltage"]    = &BMS::newAccumulatorOpenVoltage;
         can_signal_dispatch["Pack_SOC"]             = &BMS::newAccumulatorSOC;
         can_signal_dispatch["Pack_Inst_Voltage"]    = &BMS::newAccumulatorInstVoltage;
@@ -28,8 +14,6 @@ class BMS : public QObject, public CAN::Interface {
         can_signal_dispatch["High_Temperature"]     = &BMS::newAccumulatorMaxTemp;
         can_signal_dispatch["Internal_Temperature"] = &BMS::newBMSTemp;
     }
-
-    ~BMS() = default;
 
   signals:
     void newBMSTemp(float temp);
@@ -39,18 +23,7 @@ class BMS : public QObject, public CAN::Interface {
     void newAccumulatorOpenVoltage(float voltage);
     void newAccumulatorSOC(float percent);
 
-  private:
-    // As of now, newFrame and newError should be extremely fast functions before emitting more
-    // signals
-    void newFrame(const can_frame&) override;
-    void newError(const can_frame&) override;
-    void newTimeout() override;
-
-  private:
-    std::unique_ptr<dbcppp::INetwork> dbc_network;
-    std::unordered_map<uint64_t, const dbcppp::IMessage*> can_messages;
-    std::unordered_map<std::string, void (BMS::*)(float)> can_signal_dispatch;
-
+  public:
     static constexpr size_t num_of_filters = 3;
     inline static can_filter filters[num_of_filters] = {
         {

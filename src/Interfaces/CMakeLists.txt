@@ -6,9 +6,8 @@ add_library(CANInterfaces)
 if (${BUILD_BACKEND})
     target_sources(CANInterfaces PUBLIC
         Full/MotorController.hpp
-        Full/MotorController.cpp
+        Full/EnergyMeter.hpp
         Full/BMS.hpp
-        Full/BMS.cpp
     )
     target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Full)
     target_link_libraries(CANInterfaces PUBLIC CANLib dbcppp::dbcppp)
