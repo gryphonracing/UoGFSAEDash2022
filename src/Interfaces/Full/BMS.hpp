@@ -14,8 +14,8 @@ class BMS : public QObject, public CAN::Interface {
         this->CAN::Interface::startReceiving(
             "can0", BMS::filters, BMS::num_of_filters, BMS::timeout_ms);
         
-        for (const dbcppp::IMessage& msg : net->Messages()) {
-            messages.insert(std::make_pair(msg.Id(), &msg));
+        for (const dbcppp::IMessage& msg : dbc_network->Messages()) {
+            messages.insert(std::make_pair(msg.Id(), msg));
         }
         
         can_signal_dispatch["Pack_Open_Voltage"]    = &newAccumulatorOpenVoltage;
@@ -45,7 +45,7 @@ class BMS : public QObject, public CAN::Interface {
 
   private:
     static dbcppp::INetwork dbc_network;
-    static std::unordered_map<uint64_t, const dbcppp::IMessage*> can_messages;
+    static std::unordered_map<uint64_t, const dbcppp::IMessage&> can_messages;
     static std::unordered_map<std::string, void (*)(float)> can_signal_dispatch;
 
     static constexpr size_t num_of_filters = 3;

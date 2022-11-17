@@ -1,44 +1,34 @@
 #pragma once
 
 #include <QObject>
+#include <dbcppp/Network.h>
 
 #include <Interface.hpp>
 
 class MotorController : public QObject, public CAN::Interface {
     Q_OBJECT
   public:
-    MotorController(QObject* parent = nullptr) : QObject(parent) {
+    MotorController(QObject* parent = nullptr) : QObject(parent), dbc_network(dbcppp::INetwork::LoadNetworkFromFile("CM200DZ_Motor_Controller.dbc")) {
         this->CAN::Interface::startReceiving("can0",
                                              MotorController::filters,
                                              MotorController::num_of_filters,
                                              MotorController::timeout_ms);
+        
+        for (const dbcppp::IMessage& msg : dbc_network->Messages()) {
+            messages.insert(std::make_pair(msg.Id(), msg));
+        }
+        
+        can_signal_dispatch["Motor_Speed"]         = &newMotorRPM;
+        can_signal_dispatch["Motor_Temperature"]   = &newMotorTemp;
+        can_signal_dispatch["Coolant_Temperature"] = &newCoolantTemp;
+        can_signal_dispatch["12V_Voltage"]         = &new12VVoltage;
+        can_signal_dispatch["Oil_Temp"]            = &newOilTemp;
     }
     ~MotorController() = default;
 
-    float toCelsius(uint8_t low_byte, uint8_t high_byte);
-    float toLowVoltage(uint8_t low_byte, uint8_t high_byte);
-    float toNm(uint8_t low_byte, uint8_t high_byte);
-    float toHighVoltage(uint8_t low_byte, uint8_t high_byte);
-    float toAmps(uint8_t low_byte, uint8_t high_byte);
-    float toDegrees(uint8_t low_byte, uint8_t high_byte);
-    int16_t toRPM(uint8_t low_byte, uint8_t high_byte);
-    bool toBool(uint8_t byte);
-    float toHz(uint8_t low_byte, uint8_t high_byte);
-    float tokW(uint8_t low_byte, uint8_t high_byte);
-    float toWebers(uint8_t low_byte, uint8_t high_byte);
-
-    // either 100 or 10000 scale
-    float toProportionalGain100(uint8_t low_byte, uint8_t high_byte);
-    float toProportionalGain10000(uint8_t low_byte, uint8_t high_byte);
-    float toIntegralGain(uint8_t low_byte, uint8_t high_byte);
-    float toDerivativeGain(uint8_t low_byte, uint8_t high_byte);
-    float toLowpassFilterGain(uint8_t low_byte, uint8_t high_byte);
-    uint16_t toCount(uint8_t low_byte, uint8_t high_byte);
-    float toPSI(uint8_t low_byte, uint8_t high_byte);
-
   signals:
-    void newMotorRPM(int16_t rpm);
-    void newMotorTemp(int16_t temp);
+    void newMotorRPM(float rpm);
+    void newMotorTemp(float temp);
     void newCoolantTemp(float temp);
     void new12VVoltage(float voltage);
     void newOilTemp(float temp);
@@ -51,6 +41,10 @@ class MotorController : public QObject, public CAN::Interface {
     void newTimeout() override;
 
   private:
+    static dbcppp::INetwork dbc_network;
+    static std::unordered_map<uint64_t, const dbcppp::IMessage&> can_messages;
+    static std::unordered_map<std::string, void (*)(float)> can_signal_dispatch;
+
     static constexpr size_t num_of_filters = 2;
     inline static can_filter filters[num_of_filters] = {
         {
