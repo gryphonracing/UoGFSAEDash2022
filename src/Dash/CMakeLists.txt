@@ -18,6 +18,10 @@ target_include_directories(GryphonDash PRIVATE
 )
 target_link_libraries(GryphonDash PRIVATE fmt::fmt qt::qt runtimeqml::runtimeqml CANInterfaces)
 
+if (${BUILD_BACKEND})
+    target_link_libraries(GryphonDash PRIVATE dbcppp::dbcppp)
+endif()
+
 # TODO: Add the deployment for linux
 if(WIN32)
     set(windeployqt "${QT_BIN_PATH}/windeployqt.exe")

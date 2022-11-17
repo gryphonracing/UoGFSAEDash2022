@@ -1,41 +1,29 @@
-add_library(CANInterfaces)
-
-if (${BUILD_FRONTEND})
-    if (${BUILD_BACKEND})
-        target_sources(CANInterfaces PUBLIC
-            Full/MotorController.hpp
-            Full/MotorController.cpp
-            Full/BMS.hpp
-            Full/BMS.cpp
-        )
-        target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Full)
-        target_link_libraries(CANInterfaces PUBLIC CANLib)
-    else()
-        target_sources(CANInterfaces PUBLIC
-            Frontend/FakeInterface.hpp
-            Frontend/FakeInterface.cpp
-            Frontend/MotorController.hpp
-            Frontend/MotorController.cpp
-            Frontend/BMS.hpp
-            Frontend/BMS.cpp
-        ) # Currently no fake interfaces
-        target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Frontend)
-    endif()
-    target_link_libraries(CANInterfaces PUBLIC qt::qt)
-    set_target_properties(CANInterfaces PROPERTIES AUTOUIC ON AUTOMOC ON AUTORCC ON)
+if (NOT ${BUILD_FRONTEND})
+    return()
 endif()
 
+add_library(CANInterfaces)
 if (${BUILD_BACKEND})
     target_sources(CANInterfaces PUBLIC
-        Backend/Dump.cpp
-        Backend/Dump.hpp
-        Backend/ECU2019.cpp
-        Backend/ECU2019.hpp
+        Full/MotorController.hpp
+        Full/MotorController.cpp
+        Full/BMS.hpp
+        Full/BMS.cpp
     )
-    target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Backend)
-    target_link_libraries(CANInterfaces PUBLIC CANLib)
+    target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Full)
+    target_link_libraries(CANInterfaces PUBLIC CANLib dbcppp::dbcppp)
+else()
+    target_sources(CANInterfaces PUBLIC
+        Frontend/FakeInterface.hpp
+        Frontend/FakeInterface.cpp
+        Frontend/MotorController.hpp
+        Frontend/MotorController.cpp
+        Frontend/BMS.hpp
+        Frontend/BMS.cpp
+    ) # Currently no fake interfaces
+    target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Frontend)
 endif()
-
+set_target_properties(CANInterfaces PROPERTIES AUTOUIC ON AUTOMOC ON AUTORCC ON)
 set_target_properties(CANInterfaces PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<0:>)
 target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(CANInterfaces PUBLIC fmt::fmt)
+target_link_libraries(CANInterfaces PUBLIC qt::qt fmt::fmt)

@@ -3,26 +3,28 @@
 #include <QObject>
 #include <dbcppp/Network.h>
 
+#include <memory>
 #include <Interface.hpp>
 
 class MotorController : public QObject, public CAN::Interface {
     Q_OBJECT
   public:
-    MotorController(QObject* parent = nullptr) : QObject(parent), dbc_network(dbcppp::INetwork::LoadNetworkFromFile("CM200DZ_Motor_Controller.dbc")) {
+    MotorController(QObject* parent = nullptr) : QObject(parent)
+        , dbc_network(std::move(dbcppp::INetwork::LoadNetworkFromFile("20220510_Gen5_CAN_DB.dbc")[""])) {
         this->CAN::Interface::startReceiving("can0",
                                              MotorController::filters,
                                              MotorController::num_of_filters,
                                              MotorController::timeout_ms);
-        
+
         for (const dbcppp::IMessage& msg : dbc_network->Messages()) {
-            messages.insert(std::make_pair(msg.Id(), msg));
+            can_messages.insert(std::make_pair(msg.Id(), &msg));
         }
         
-        can_signal_dispatch["Motor_Speed"]         = &newMotorRPM;
-        can_signal_dispatch["Motor_Temperature"]   = &newMotorTemp;
-        can_signal_dispatch["Coolant_Temperature"] = &newCoolantTemp;
-        can_signal_dispatch["12V_Voltage"]         = &new12VVoltage;
-        can_signal_dispatch["Oil_Temp"]            = &newOilTemp;
+        can_signal_dispatch["INV_Motor_Speed"]    = &MotorController::newMotorRPM;
+        can_signal_dispatch["INV_Motor_Temp"]     = &MotorController::newMotorTemp;
+        can_signal_dispatch["INV_Coolant_Temp"]   = &MotorController::newCoolantTemp;
+        can_signal_dispatch["INV_Analog_Input_1"] = &MotorController::new12VVoltage;
+        can_signal_dispatch["INV_Analog_Input_2"] = &MotorController::newOilTemp;
     }
     ~MotorController() = default;
 
@@ -41,9 +43,9 @@ class MotorController : public QObject, public CAN::Interface {
     void newTimeout() override;
 
   private:
-    static dbcppp::INetwork dbc_network;
-    static std::unordered_map<uint64_t, const dbcppp::IMessage&> can_messages;
-    static std::unordered_map<std::string, void (*)(float)> can_signal_dispatch;
+    std::unique_ptr<dbcppp::INetwork> dbc_network;
+    std::unordered_map<uint64_t, const dbcppp::IMessage*> can_messages;
+    std::unordered_map<std::string, void (MotorController::*)(float)> can_signal_dispatch;
 
     static constexpr size_t num_of_filters = 2;
     inline static can_filter filters[num_of_filters] = {

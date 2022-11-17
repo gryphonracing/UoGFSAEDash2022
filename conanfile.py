@@ -65,7 +65,7 @@ class GRCDash(ConanFile):
         deps.generate()
 
     def build(self):
-        copy(self, ".dbc", self.source_folder, os.path.join(self.build_folder, "bin"), keep_path=False)
+        copy(self, "*.dbc", os.path.join(self.source_folder, "src"), os.path.join(self.build_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.configure(variables={
             "BUILD_FRONTEND": self.options.dev != "back",

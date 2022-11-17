@@ -3,27 +3,30 @@
 #include <QObject>
 #include <fstream>
 #include <unordered_map>
-
+#include <memory>
+#include <fmt/core.h>
 #include <Interface.hpp>
 #include <dbcppp/Network.h>
 
 class BMS : public QObject, public CAN::Interface {
     Q_OBJECT
   public:
-    BMS(QObject* parent = nullptr) : QObject(parent), dbc_network(dbcppp::INetwork::LoadNetworkFromFile("Orion_CANBUS.dbc")) {
+    BMS(QObject* parent = nullptr) : QObject(parent)
+        , dbc_network(std::move(dbcppp::INetwork::LoadNetworkFromFile("Orion_CANBUS.dbc")[""])) {
         this->CAN::Interface::startReceiving(
             "can0", BMS::filters, BMS::num_of_filters, BMS::timeout_ms);
-        
+
         for (const dbcppp::IMessage& msg : dbc_network->Messages()) {
-            messages.insert(std::make_pair(msg.Id(), msg));
+            
+            can_messages.insert(std::make_pair(msg.Id(), &msg));
         }
         
-        can_signal_dispatch["Pack_Open_Voltage"]    = &newAccumulatorOpenVoltage;
-        can_signal_dispatch["Pack_SOC"]             = &newAccumulatorSOC;
-        can_signal_dispatch["Pack_Inst_Voltage"]    = &newAccumulatorInstVoltage;
-        can_signal_dispatch["Pack_Current"]         = &newAccumulatorCurrent;
-        can_signal_dispatch["High_Temperature"]     = &newAccumulatorMaxTemp;
-        can_signal_dispatch["Internal_Temperature"] = &newBMSTemp;
+        can_signal_dispatch["Pack_Open_Voltage"]    = &BMS::newAccumulatorOpenVoltage;
+        can_signal_dispatch["Pack_SOC"]             = &BMS::newAccumulatorSOC;
+        can_signal_dispatch["Pack_Inst_Voltage"]    = &BMS::newAccumulatorInstVoltage;
+        can_signal_dispatch["Pack_Current"]         = &BMS::newAccumulatorCurrent;
+        can_signal_dispatch["High_Temperature"]     = &BMS::newAccumulatorMaxTemp;
+        can_signal_dispatch["Internal_Temperature"] = &BMS::newBMSTemp;
     }
 
     ~BMS() = default;
@@ -44,9 +47,9 @@ class BMS : public QObject, public CAN::Interface {
     void newTimeout() override;
 
   private:
-    static dbcppp::INetwork dbc_network;
-    static std::unordered_map<uint64_t, const dbcppp::IMessage&> can_messages;
-    static std::unordered_map<std::string, void (*)(float)> can_signal_dispatch;
+    std::unique_ptr<dbcppp::INetwork> dbc_network;
+    std::unordered_map<uint64_t, const dbcppp::IMessage*> can_messages;
+    std::unordered_map<std::string, void (BMS::*)(float)> can_signal_dispatch;
 
     static constexpr size_t num_of_filters = 3;
     inline static can_filter filters[num_of_filters] = {
