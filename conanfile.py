@@ -2,6 +2,7 @@ from conans import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
 from conan.tools.layout import cmake_layout
 from conan.tools.build import cross_building
+from conan.tools.files import copy
 from conans.errors import ConanInvalidConfiguration
 import os
 
@@ -48,6 +49,8 @@ class GRCDash(ConanFile):
             self.requires("runtimeqml/cci.20220923")
         else:
             self.generators = "virtualrunenv",
+        if self.options.dev != "front":
+            self.requires("dbcppp/3.2.6")
         self.requires("fmt/9.0.0")
 
     def layout(self):
@@ -62,6 +65,7 @@ class GRCDash(ConanFile):
         deps.generate()
 
     def build(self):
+        copy(self, ".dbc", self.source_folder, os.path.join(self.build_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.configure(variables={
             "BUILD_FRONTEND": self.options.dev != "back",
