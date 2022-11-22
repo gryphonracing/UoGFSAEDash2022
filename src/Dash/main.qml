@@ -11,7 +11,7 @@ ApplicationWindow {
   color: background_color
   title: "GRC Dash"
 
-  property var border_width: 5
+  property var border_width: 4
 
   property var background_color: String("#000000")
   property var box_color: String("#080808")
@@ -42,6 +42,11 @@ ApplicationWindow {
 
       Text {
         id: battery_percent_text
+        font {
+          family: "serif"
+          pointSize: 20
+          bold: true
+        }
         anchors {
           centerIn: parent
         }
@@ -112,12 +117,58 @@ ApplicationWindow {
       }
       color: box_color
 
-      Text {
-        id: battery_voltage_text
+      Rectangle {
+        id: battery_bar_outline
+        width: parent.width - 50
+        height: parent.height - 50
         anchors {
-          centerIn: parent
+          top: parent.top
+          left: parent.left
+          margins: 25
         }
-        color: text_color
+        border {
+          width: border_width
+          color: "#242424"
+        }
+        radius: 10
+        color: "#161616"
+        
+        Rectangle {
+          id: battery_bar_level
+          width: parent.width - 2*border_width
+          height: parent.height - 2*border_width
+          anchors {
+            top: parent.top
+            left: parent.left
+            margins: border_width
+          }
+          radius: 10 - border_width
+          color: "green"
+        }
+
+        Rectangle {
+          id: battery_bar_tip
+          height: parent.height / 4
+          width: 2.5*border_width
+          anchors {
+            left: parent.right
+            verticalCenter: parent.verticalCenter
+            margins: -0.9*border_width
+          }
+          radius: border_width
+          color: "#242424"
+        }
+
+        Image {
+          id: battery_bar_bolt
+          source: "images/battery_symbol"
+          width: 64
+          height: 64
+          anchors {
+            verticalCenter: parent.verticalCenter
+            leftMargin: parent.height
+          }
+        }
       }
     }
 
@@ -137,7 +188,7 @@ ApplicationWindow {
       color: box_color
 
       Text {
-        id: rpm_text
+        id: speed_text
         anchors {
           centerIn: parent
         }
@@ -225,7 +276,8 @@ ApplicationWindow {
     target: MotorController
     function onNewRPM(rpm)
     {
-      rpm_text.text = `RPM: ${rpm}`
+      var speed = 160 + rpm % 160
+      speed_text.text = `Speed: ${speed}`
     }
     function onNewCoolantTemp(coolant_temp)
     {
@@ -241,11 +293,25 @@ ApplicationWindow {
     target: BMS
     function onNewVoltage(voltage)
     {
-      battery_voltage_text.text = `Battery Voltage: ${voltage.toFixed(1)}`
+      // battery_voltage_text.text = `Battery Voltage: ${voltage.toFixed(1)}`
     }
     function onNewBatteryPercent(percent)
     {
-      battery_percent_text.text = `Battery %: ${percent.toFixed(1)}`
+      battery_percent_text.text = `${percent.toFixed(1)}%`
+      battery_bar_level.width = (battery_bar_level.parent.width - 2*border_width)*percent/100
+
+      if (percent <= 20)
+      {
+        battery_bar_level.color = "red"
+      }
+      else if (percent > 20 && percent <= 50)
+      {
+        battery_bar_level.color = "orange"
+      }
+      else
+      {
+        battery_bar_level.color = "green"
+      }
     }
   }
 }

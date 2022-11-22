@@ -2,4 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
     </qresource>
+    <qresource>
+        <file alias = "battery_symbol">images/battery_symbol.png</file>
+    </qresource>
 </RCC>
