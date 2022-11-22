@@ -50,6 +50,7 @@ ApplicationWindow {
         anchors {
           centerIn: parent
         }
+        horizontalAlignment: Text.AlignHCenter
         color: text_color
       }
     }
@@ -132,7 +133,7 @@ ApplicationWindow {
         }
         radius: 10
         color: "#161616"
-        
+
         Rectangle {
           id: battery_bar_level
           width: parent.width - 2*border_width
@@ -187,11 +188,57 @@ ApplicationWindow {
       }
       color: box_color
 
-      Text {
-        id: speed_text
+      Dial {
+        id: speedometer_dial
+        width: parent.width / 1.25
+        height: width
         anchors {
           centerIn: parent
         }
+
+        background: Rectangle {
+          id: speedometer_background
+          x: parent.width / 2 - width / 2
+          y: parent.height / 2 - height / 2
+          width: Math.max(64, Math.min(parent.width, parent.height))
+          height: width
+          color: "transparent"
+          radius: width / 2
+        }
+
+        handle: Rectangle {
+          id: speedometer_handle
+          x: parent.background.x + parent.background.width / 2 - width / 2
+          y: parent.background.y + parent.background.height / 2 - height / 2
+          width: 10
+          height: 50
+          color: "red"
+          radius: 5
+          antialiasing: true
+          transform: [
+            Translate {
+              y: -Math.min(speedometer_dial.background.width, speedometer_dial.background.height) * 0.4 + speedometer_handle.height / 2
+            },
+            Rotation {
+              angle: speedometer_dial.angle
+              origin.x: speedometer_handle.width / 2
+              origin.y: speedometer_handle.height / 2
+            }
+          ]
+        }
+      }
+
+      Text {
+        id: speed_text
+        font {
+          family: "serif"
+          pointSize: 20
+          bold: true
+        }
+        anchors {
+          centerIn: parent
+        }
+        horizontalAlignment: Text.AlignHCenter
         color: text_color
       }
     }
@@ -277,7 +324,8 @@ ApplicationWindow {
     function onNewRPM(rpm)
     {
       var speed = 160 + rpm % 160
-      speed_text.text = `Speed: ${speed}`
+      speed_text.text = `${speed}\nkm/h`
+      speedometer_dial.value = speed / 160
     }
     function onNewCoolantTemp(coolant_temp)
     {
