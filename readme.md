@@ -30,6 +30,12 @@ sudo apt-get install python cmake libgl-dev libx11-dev libx11-xcb-dev libxcb-uti
 python3 -m pip install conan # or python3 on MacOS
 ```
 
+or
+
+```bash
+pip3 install conan # or python3 on MacOS
+```
+
 ## Installing Build Dependencies
 
 Run the conan install script (`-pr` is the profile being used, the options are found in [ConanProfiles](./ConanProfiles/))
