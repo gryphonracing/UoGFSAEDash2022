@@ -42,15 +42,9 @@ ApplicationWindow {
 
       Text {
         id: battery_percent_text
-        font {
-          family: "serif"
-          pointSize: 20
-          bold: true
-        }
         anchors {
           centerIn: parent
         }
-        horizontalAlignment: Text.AlignHCenter
         color: text_color
       }
     }
@@ -161,13 +155,14 @@ ApplicationWindow {
         }
 
         Image {
-          id: battery_bar_bolt
-          source: "images/battery_symbol"
-          width: 64
-          height: 64
+          id: battery_bar_symbol
+          source: "/images/battery_symbol"
+          width: 32
+          height: 32
           anchors {
             verticalCenter: parent.verticalCenter
-            leftMargin: parent.height
+            left: parent.left
+            leftMargin: 12
           }
         }
       }
@@ -193,11 +188,12 @@ ApplicationWindow {
         width: parent.width / 1.25
         height: width
         anchors {
-          centerIn: parent
+          horizontalCenter: parent.horizontalCenter
+          top: parent.top
+          topMargin: 35
         }
 
         background: Rectangle {
-          id: speedometer_background
           x: parent.width / 2 - width / 2
           y: parent.height / 2 - height / 2
           width: Math.max(64, Math.min(parent.width, parent.height))
@@ -208,16 +204,16 @@ ApplicationWindow {
 
         handle: Rectangle {
           id: speedometer_handle
-          x: parent.background.x + parent.background.width / 2 - width / 2
-          y: parent.background.y + parent.background.height / 2 - height / 2
-          width: 10
-          height: 50
+          x: speedometer_dial.background.x + speedometer_dial.background.width / 2 - width / 2
+          y: speedometer_dial.background.y + speedometer_dial.background.height / 2 - height / 2
+          width: 8
+          height: 80
           color: "red"
           radius: 5
           antialiasing: true
           transform: [
             Translate {
-              y: -Math.min(speedometer_dial.background.width, speedometer_dial.background.height) * 0.4 + speedometer_handle.height / 2
+              y: -Math.min(speedometer_dial.background.width, speedometer_dial.background.height) * 0.45 + speedometer_handle.height / 2
             },
             Rotation {
               angle: speedometer_dial.angle
@@ -226,20 +222,28 @@ ApplicationWindow {
             }
           ]
         }
-      }
-
-      Text {
-        id: speed_text
-        font {
-          family: "serif"
-          pointSize: 20
-          bold: true
+        Text {
+          id: speed_text
+          font {
+            family: "serif"
+            pointSize: 20
+            bold: true
+          }
+          anchors {
+            centerIn: parent
+          }
+          horizontalAlignment: Text.AlignHCenter
+          color: text_color
         }
-        anchors {
-          centerIn: parent
+        Image {
+          id: speedometer_dial_numbers
+          source: "/images/speedometer_numbers"
+          width: parent.height
+          height: parent.height
+          anchors {
+            centerIn: parent
+          }
         }
-        horizontalAlignment: Text.AlignHCenter
-        color: text_color
       }
     }
 
@@ -324,8 +328,13 @@ ApplicationWindow {
     function onNewRPM(rpm)
     {
       var speed = 160 + rpm % 160
+      var max_speed = 160
+      var min_needle_pos = 0.075
+      var max_needle_pos = 0.925
+      var change = (max_needle_pos - min_needle_pos) / max_speed
+
       speed_text.text = `${speed}\nkm/h`
-      speedometer_dial.value = speed / 160
+      speedometer_dial.value = min_needle_pos + speed * change
     }
     function onNewCoolantTemp(coolant_temp)
     {
@@ -339,13 +348,9 @@ ApplicationWindow {
 
   Connections {
     target: BMS
-    function onNewVoltage(voltage)
-    {
-      // battery_voltage_text.text = `Battery Voltage: ${voltage.toFixed(1)}`
-    }
     function onNewBatteryPercent(percent)
     {
-      battery_percent_text.text = `${percent.toFixed(1)}%`
+      battery_percent_text.text = `Battery Percent: ${percent.toFixed(1)}`
       battery_bar_level.width = (battery_bar_level.parent.width - 2*border_width)*percent/100
 
       if (percent <= 20)
