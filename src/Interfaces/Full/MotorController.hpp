@@ -1,15 +1,16 @@
 #pragma once
 
-#include <QObject>
 #include <DBCInterface.hpp>
+#include <QObject>
 
 class MotorController : public QObject, public CAN::DBCInterface<MotorController> {
     Q_OBJECT
   public:
-    MotorController(QObject* parent = nullptr) : QObject(parent), DBCInterface("20220510_Gen5_CAN_DB.dbc") {
-        can_signal_dispatch["INV_Motor_Speed"]    = &MotorController::newMotorRPM;
-        can_signal_dispatch["INV_Motor_Temp"]     = &MotorController::newMotorTemp;
-        can_signal_dispatch["INV_Coolant_Temp"]   = &MotorController::newCoolantTemp;
+    MotorController(QObject* parent = nullptr)
+        : QObject(parent), DBCInterface("20220510_Gen5_CAN_DB.dbc") {
+        can_signal_dispatch["INV_Motor_Speed"] = &MotorController::newMotorRPM;
+        can_signal_dispatch["INV_Motor_Temp"] = &MotorController::newMotorTemp;
+        can_signal_dispatch["INV_Coolant_Temp"] = &MotorController::newCoolantTemp;
         can_signal_dispatch["INV_Analog_Input_1"] = &MotorController::new12VVoltage;
         can_signal_dispatch["INV_Analog_Input_2"] = &MotorController::newOilTemp;
     }

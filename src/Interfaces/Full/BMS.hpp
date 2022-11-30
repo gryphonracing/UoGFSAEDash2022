@@ -1,17 +1,17 @@
 #pragma once
 
-#include <QObject>
 #include <DBCInterface.hpp>
+#include <QObject>
 
 class BMS : public QObject, public CAN::DBCInterface<BMS> {
     Q_OBJECT
   public:
     BMS(QObject* parent = nullptr) : QObject(parent), DBCInterface("Orion_CANBUS.dbc") {
-        can_signal_dispatch["Pack_Open_Voltage"]    = &BMS::newAccumulatorOpenVoltage;
-        can_signal_dispatch["Pack_SOC"]             = &BMS::newAccumulatorSOC;
-        can_signal_dispatch["Pack_Inst_Voltage"]    = &BMS::newAccumulatorInstVoltage;
-        can_signal_dispatch["Pack_Current"]         = &BMS::newAccumulatorCurrent;
-        can_signal_dispatch["High_Temperature"]     = &BMS::newAccumulatorMaxTemp;
+        can_signal_dispatch["Pack_Open_Voltage"] = &BMS::newAccumulatorOpenVoltage;
+        can_signal_dispatch["Pack_SOC"] = &BMS::newAccumulatorSOC;
+        can_signal_dispatch["Pack_Inst_Voltage"] = &BMS::newAccumulatorInstVoltage;
+        can_signal_dispatch["Pack_Current"] = &BMS::newAccumulatorCurrent;
+        can_signal_dispatch["High_Temperature"] = &BMS::newAccumulatorMaxTemp;
         can_signal_dispatch["Internal_Temperature"] = &BMS::newBMSTemp;
     }
 
@@ -31,14 +31,13 @@ class BMS : public QObject, public CAN::DBCInterface<BMS> {
             0x7FF // Only grab from our BMS (7EB is the response addr, 7E3 is the BMS addr)
         },
         {
-            0x0C0, // Grab 0x0C0 and 0x0C1 for broadcast messages
-            0x7FE
+            0x0C0,
+            0x7FE // Grab 0x0C0 and 0x0C1 for broadcast messages
         },
         {
-            0x0C2, // Grab 0x0C2 for broadcast messages
-            0x7FF
-        }
-    };
+            0x0C2,
+            0x7FF // Grab 0x0C2 for broadcast messages
+        }};
 
     static constexpr uint32_t timeout_ms = 500;
 };
