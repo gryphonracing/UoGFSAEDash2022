@@ -66,7 +66,7 @@ RetCode Interface::openSocket(const char* canbus_interface_name,
 
     if (filter_count > 0) {
         if (setsockopt(
-                m_socket, SOL_CAN_RAW, CAN_RAW_FILTER, filters, filter_count * sizeof(can_filter)) <
+                   m_socket, SOL_CAN_RAW, CAN_RAW_FILTER, filters, filter_count * sizeof(can_filter)) <
             0) {
             return RetCode::SocketErr;
         }
