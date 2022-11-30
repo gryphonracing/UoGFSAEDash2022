@@ -1,0 +1,27 @@
+# Checks Formatting (clang-format)
+
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - closed
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: false
+          submodules: false
+
+      - uses: DoozyX/clang-format-lint-action@v0.15
+        with:
+          source: './src'
+          extensions: 'h,hpp,cpp,c'
+          clangFormatVersion: 12
+          style: file
