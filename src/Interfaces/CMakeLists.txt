@@ -7,6 +7,7 @@ if (${BUILD_BACKEND})
     target_sources(CANInterfaces PUBLIC
         Full/MotorController.hpp
         Full/EnergyMeter.hpp
+        Full/AN400ECU.hpp
         Full/BMS.hpp
     )
     target_include_directories(CANInterfaces PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Full)
