@@ -10,10 +10,11 @@
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    // The AN400ECU class inpersonates all of the other systems. This allows us to re-use the front end without any changes
+    // The AN400ECU class inpersonates all of the other systems. This allows us to re-use the front
+    // end without any changes
     AN400ECU* motor_controller = new AN400ECU(); // Should be before QQml engine
-    AN400ECU* energy_meter = new AN400ECU(); // Should be before QQml engine
-    AN400ECU* bms = new AN400ECU(); // Should be before QQml engine
+    AN400ECU* energy_meter = new AN400ECU();     // Should be before QQml engine
+    AN400ECU* bms = new AN400ECU();              // Should be before QQml engine
     QQmlApplicationEngine engine;
 
     qmlRegisterSingletonInstance<AN400ECU>(
