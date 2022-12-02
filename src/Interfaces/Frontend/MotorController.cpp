@@ -12,7 +12,6 @@ void MotorController::generateValues() {
     emit newMotorTemp(temps);
     emit new12VVoltage(voltage);
 
-
     rpm += 1.0f;
     if (rpm >= 32767) {
         rpm = 0;

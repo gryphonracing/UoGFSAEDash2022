@@ -4,7 +4,6 @@
 
 #include <FakeInterface.hpp>
 
-
 class MotorController : public QObject, public CAN::FakeInterface {
     Q_OBJECT
   public:
