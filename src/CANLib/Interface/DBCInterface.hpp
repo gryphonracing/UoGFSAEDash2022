@@ -37,6 +37,7 @@ class DBCInterface : public CAN::Interface {
         if (message == can_messages.end())
             return; // Could not find decoding logic for message in the provided DBC
 
+        fmt::print("Data: {:#16X}\n", *reinterpret_cast<const uint64_t*>(frame.data));
         for (const dbcppp::ISignal& sig : message->second->Signals()) {
             const auto signal_dispatch_func_iter = can_signal_dispatch.find(sig.Name());
             if (signal_dispatch_func_iter == can_signal_dispatch.end())

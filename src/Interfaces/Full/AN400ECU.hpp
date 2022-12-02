@@ -10,11 +10,11 @@ class AN400ECU : public QObject, public CAN::DBCInterface<AN400ECU> {
   public:
     AN400ECU(QObject* parent = nullptr) : QObject(parent), DBCInterface("AN400ECU.dbc") {
         can_signal_dispatch["RPM"] = &AN400ECU::newMotorRPM;
-        can_signal_dispatch["Thermistor1_Temp"] = &AN400ECU::newMotorTemp;
-        can_signal_dispatch["Coolant_Temp"] = &AN400ECU::newCoolantTemp;
-        can_signal_dispatch["Thermistor2_Temp"] = &AN400ECU::newOilTemp;
         can_signal_dispatch["Battery_Voltage"] = &AN400ECU::batteryVoltageToSOC;
         can_signal_dispatch["Air_Temp"] = &AN400ECU::newAccumulatorMaxTemp;
+        can_signal_dispatch["Coolant_Temp"] = &AN400ECU::newCoolantTemp;
+        can_signal_dispatch["Thermistor1_Temp"] = &AN400ECU::newMotorTemp;
+        can_signal_dispatch["Thermistor2_Temp"] = &AN400ECU::newOilTemp;
         // can_signal_dispatch["Pack_Current"] = &AN400ECU::newAccumulatorCurrent;
         // can_signal_dispatch["Internal_Temperature"] = &AN400ECU::newBMSTemp;
         // can_signal_dispatch["Current"] = &AN400ECU::newCurrent;
@@ -25,13 +25,13 @@ class AN400ECU : public QObject, public CAN::DBCInterface<AN400ECU> {
     }
 
     void batteryVoltageToSOC(float voltage) {
-        fmt::print("Battery voltage");
         float empty_battery = 11.f; // 11 Volts becomes 0% Battery
         float full_battery = 15.f;  // 15 Volts becomes 100% Battery
         float clamped_voltages =
             std::clamp(voltage, empty_battery, full_battery); // Now contains values from 11v - 15v
         float calculated_SOC =
             (clamped_voltages - empty_battery) * (100 / (full_battery - empty_battery));
+        fmt::print("Battery Voltage: {}, Calc SOC: {}\n", voltage, calculated_SOC);
         emit newAccumulatorSOC(calculated_SOC);
     }
 

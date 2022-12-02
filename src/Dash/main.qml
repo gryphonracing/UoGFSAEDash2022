@@ -318,21 +318,21 @@ ApplicationWindow {
 
   Connections {
     target: MotorController
-    function onNewMotorRPM(rpm)
+    function onNewMotorRPM(motor_rpm)
     {
-      var speed = rpm%120                               //Speed in km/h is calculated here
-
-      speedValue.text = `${speed}`                                //Text display of speed
+        console.log(motor_rpm)
+      const gear_ratio = 3.48/1; // 3.48:1 gear ratio
+      const wheel_circumfrence = 1.2767; // 16" OD of wheel -> ~1.28 meter circumfrence
+      let axle_rpm = motor_rpm / gear_ratio; // axle rotations per minute
+      let wheel_mpm = wheel_circumfrence * axle_rpm // Wheel speed in meters per second
+      let wheel_mph = wheel_mpm * 60; // Meters per hour
+      let wheel_kmph = wheel_mph / 1000; // km per hour
+      speedValue.text = `${wheel_kmph.toFixed(0)}` //Text display of speed
     }
     function onNewCoolantTemp(coolant_temp)
     {
       //Getting positive values within the right range
-      if (coolant_temp < 0)
-      {
-        coolant_temp = 180+(coolant_temp*20%120)
-      }
-      else{coolant_temp = 180-(coolant_temp*20%120)}
-
+      
       coolantTempValue.text = `${coolant_temp.toFixed(1)}`
 
       //Color coding value ranges
@@ -350,13 +350,6 @@ ApplicationWindow {
     }
     function onNewOilTemp(oil_temp)
     {
-
-      //Getting positive values within the right range
-      if (oil_temp < 0)
-      {
-        oil_temp = 170+(oil_temp*25%110)
-      }
-      else{oil_temp = 170-(oil_temp*25%110)}
 
       oilTempValue.text = `${oil_temp.toFixed(1)}`
 
@@ -377,11 +370,6 @@ ApplicationWindow {
     function onNewMotorTemp(temp)
     {
       //Getting positive values within the right range
-      if (temp < 0)
-      {
-        temp = 160+(temp*20%100)
-      }
-      else{temp = 160-(temp*20%100)}
 
       motorTempValue.text = `${temp.toFixed(1)}`
 
