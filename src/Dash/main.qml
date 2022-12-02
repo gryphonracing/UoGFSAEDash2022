@@ -413,8 +413,21 @@ ApplicationWindow {
     }
     function onNewAccumulatorMaxTemp(temp)
     {
-      accumTempValue.text = coolantTempValue.text
-      accumTempValue.color = coolantTempValue.color
+      
+      accumTempValue.text = `${temp.toFixed(1)}`
+
+      //Color coding value ranges
+      if (temp < 90)
+      {
+        accumTempValue.color="blue"
+      }
+      else if(temp > 120)
+      {
+        accumTempValue.color="red"
+      }
+      else {
+        accumTempValue.color="green"
+      }
     }
     function onNewAccumulatorCurrent(current)
     {
