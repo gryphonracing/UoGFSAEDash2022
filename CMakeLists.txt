@@ -10,6 +10,10 @@ if(${BUILD_FRONTEND})
     find_package(runtimeqml CONFIG REQUIRED)
 endif()
 
+if(${BUILD_BACKEND})
+    find_package(dbcppp CONFIG REQUIRED)
+endif()
+
 find_package(fmt CONFIG REQUIRED)
 set(CMAKE_THREAD_PREFER_PTHREAD true)
 find_package(Threads REQUIRED)

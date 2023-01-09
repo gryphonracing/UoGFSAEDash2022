@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import CAN.MotorController
 import CAN.BMS
+import CAN.EnergyMeter
 
 ApplicationWindow {
     visible: true

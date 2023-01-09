@@ -11,11 +11,10 @@
 
 using namespace CAN;
 
-
 RetCode Interface::startReceiving(const char* canbus_interface_name,
-                        can_filter* filters,
-                        const size_t num_of_filters,
-                        uint32_t read_timeout_ms) {
+                                  can_filter* filters,
+                                  const size_t num_of_filters,
+                                  uint32_t read_timeout_ms) {
     if (this->openSocket(canbus_interface_name, filters, num_of_filters, read_timeout_ms) !=
         RetCode::Success) {
         return RetCode::SocketErr;

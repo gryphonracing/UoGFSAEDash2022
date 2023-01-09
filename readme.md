@@ -14,6 +14,11 @@ Install all missing packages
 sudo apt-get install python cmake libgl-dev libx11-dev libx11-xcb-dev libxcb-util-dev m4 libffi-dev
 ```
 
+Ensure that the can interface on the RPi is active
+```bash
+sudo ip link set can0 up type can bitrate 1000000 # 1 mbps speed
+```
+
 ### Setup for Windows
 
 - Install [Python](https://docs.python.org/3/using/windows.html#using-python-on-windows) & ensure it is installed to PATH.

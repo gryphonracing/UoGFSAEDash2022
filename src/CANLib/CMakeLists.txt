@@ -5,8 +5,8 @@ set(CODE_FILES
 
 set(HEADER_FILES
     Interface/Interface.hpp
+    Interface/DBCInterface.hpp
     Tools/tools.hpp
-    Tools/converters.hpp
     defs.hpp
 )
 
@@ -17,4 +17,4 @@ target_include_directories(CANLib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/Interface
     ${CMAKE_CURRENT_SOURCE_DIR}/Tools
 )
-target_link_libraries(CANLib PUBLIC fmt::fmt Threads::Threads)
+target_link_libraries(CANLib PUBLIC fmt::fmt dbcppp::dbcppp Threads::Threads)

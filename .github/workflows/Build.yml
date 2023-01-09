@@ -1,0 +1,36 @@
+# Verifies building
+
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: false
+          submodules: false
+
+      - name: Install conan
+        run: python -m pip install conan
+  
+      # - name: Add Conan Server
+      # run: conan remote add grc /* Remote URL */ False --force
+
+      - name: Clear Conan Cache
+        run: conan remove "*" -f
+      
+      - name: Conan Install
+        run: conan install . -if build -pr:h ConanProfiles/Linux-gcc-12-Debug.ini -pr:b ConanProfiles/Linux-gcc-12-Debug.ini -r grc
+      
+      - name: Conan Build
+        run: conan build . -if build
+

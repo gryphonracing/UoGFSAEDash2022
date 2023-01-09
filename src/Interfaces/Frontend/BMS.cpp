@@ -9,7 +9,7 @@ void BMS::generateValues() {
     static uint16_t temp = -40;
     emit newAccumulatorOpenVoltage(static_cast<float>(voltage++) / 10);
     emit newAccumulatorSOC(static_cast<float>(percent++) / 10);
-    emit newBMSTemp(static_cast<float>(temp++) );
+    emit newBMSTemp(static_cast<float>(temp++));
     emit newAccumulatorMaxTemp(static_cast<float>(temp++));
     emit newAccumulatorCurrent(static_cast<float>(current++) / 10);
     emit newAccumulatorInstVoltage(static_cast<float>(voltage++) / 10);

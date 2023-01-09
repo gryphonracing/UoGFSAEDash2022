@@ -2,9 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <fmt/core.h>
 
-#include <BMS.hpp>
-#include <EnergyMeter.hpp>
-#include <MotorController.hpp>
+#include <AN400ECU.hpp>
 
 #ifdef QT_DEBUG
 #include <runtimeqml.hpp>
@@ -12,15 +10,17 @@
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    MotorController* motor_controller = new MotorController(); // Should be before QQml engine
-    EnergyMeter* energy_meter = new EnergyMeter();             // Should be before QQml engine
-    BMS* bms = new BMS();                                      // Should be before QQml engine
+    // The AN400ECU class inpersonates all of the other systems. This allows us to re-use the front
+    // end without any changes
+    AN400ECU* motor_controller = new AN400ECU(); // Should be before QQml engine
+    AN400ECU* energy_meter = new AN400ECU();     // Should be before QQml engine
+    AN400ECU* bms = new AN400ECU();              // Should be before QQml engine
     QQmlApplicationEngine engine;
 
-    qmlRegisterSingletonInstance<MotorController>(
+    qmlRegisterSingletonInstance<AN400ECU>(
         "CAN.MotorController", 1, 0, "MotorController", motor_controller);
-    qmlRegisterSingletonInstance<EnergyMeter>("CAN.EnergyMeter", 1, 0, "EnergyMeter", energy_meter);
-    qmlRegisterSingletonInstance<BMS>("CAN.BMS", 1, 0, "BMS", bms);
+    qmlRegisterSingletonInstance<AN400ECU>("CAN.EnergyMeter", 1, 0, "EnergyMeter", energy_meter);
+    qmlRegisterSingletonInstance<AN400ECU>("CAN.BMS", 1, 0, "BMS", bms);
 #ifdef QT_DEBUG
     RuntimeQml* rt = new RuntimeQml(&engine);
     rt->parseQrc(ROOT_SOURCE_PATH "/qml.qrc");
