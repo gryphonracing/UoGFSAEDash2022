@@ -18,6 +18,8 @@ else()
         Frontend/FakeInterface.cpp
         Frontend/MotorController.hpp
         Frontend/MotorController.cpp
+        Frontend/EnergyMeter.cpp
+        Frontend/EnergyMeter.hpp
         Frontend/BMS.hpp
         Frontend/BMS.cpp
     ) # Currently no fake interfaces

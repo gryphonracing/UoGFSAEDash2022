@@ -3,27 +3,27 @@
 using namespace CAN;
 
 void BMS::generateValues() {
-    static uint16_t voltage = 110;
-    static uint16_t current = -6000;
-    static uint16_t percent = 0;
-    static uint16_t temp = -40;
-    emit newAccumulatorOpenVoltage(static_cast<float>(voltage++) / 10);
-    emit newAccumulatorSOC(static_cast<float>(percent++) / 10);
-    emit newBMSTemp(static_cast<float>(temp++));
-    emit newAccumulatorMaxTemp(static_cast<float>(temp++));
-    emit newAccumulatorCurrent(static_cast<float>(current++) / 10);
-    emit newAccumulatorInstVoltage(static_cast<float>(voltage++) / 10);
+    static float voltage = 620;
+    static float current = 0;
+    static float percent = 0;
+    static float temp = -40;
+    emit newAccumulatorOpenVoltage(voltage += 0.8f);
+    emit newAccumulatorSOC(percent += 0.7f);
+    emit newBMSTemp(temp += 0.9f);
+    emit newAccumulatorMaxTemp(temp += 1.3f);
+    emit newAccumulatorCurrent(current += 3.8f);
+    emit newAccumulatorInstVoltage(voltage -= 2.7f);
 
     if (temp >= 80) {
         temp = -40;
     }
-    if (percent >= 1000) {
+    if (percent >= 100) {
         percent = 0;
     }
-    if (voltage >= 145) {
-        voltage = 110;
+    if (voltage <= 480) {
+        voltage = 620;
     }
-    if (current >= 6000) {
-        current = -6000;
+    if (current >= 200) {
+        current = 0;
     }
 }
