@@ -33,7 +33,7 @@ python -m pip install conan # or python3 on MacOS
 or
 
 ```bash
-pip3 install conan # or python3 on MacOS
+pip install conan # or pip3 on MacOS
 ```
 
 ## Installing Build Dependencies
