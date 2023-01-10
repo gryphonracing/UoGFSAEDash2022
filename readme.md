@@ -27,7 +27,7 @@ sudo apt-get install python cmake libgl-dev libx11-dev libx11-xcb-dev libxcb-uti
 ### Universal
 - Install conan via pip
 ```bash
-python3 -m pip install conan # or python3 on MacOS
+python -m pip install conan # or python3 on MacOS
 ```
 
 or
