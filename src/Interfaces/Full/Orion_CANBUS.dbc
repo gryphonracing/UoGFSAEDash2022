@@ -1,0 +1,53 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: BMS Third_Party_Device
+
+
+BO_ 192 MSGID_0XC0: 3 BMS
+ SG_ Pack_Open_Voltage : 7|16@0+ (0.1,0) [0|0] "Volts"  Third_Party_Device
+ SG_ Pack_SOC : 23|8@0+ (0.5,0) [0|0] "Percent"  Third_Party_Device
+
+BO_ 193 MSGID_0XC1: 4 BMS
+ SG_ Pack_Inst_Voltage : 7|16@0+ (0.1,0) [0|0] "Volts"  Third_Party_Device
+ SG_ Pack_Current : 23|16@0+ (0.1,0) [0|0] "Amps"  Third_Party_Device
+
+BO_ 194 MSGID_0XC2: 2 BMS
+ SG_ High_Temperature : 7|8@0+ (1.0,0) [0|0] "Celsius"  Third_Party_Device
+ SG_ Internal_Temperature : 15|8@0+ (1.0,0) [0|0] "Celsius"  Third_Party_Device
+
+CM_ BO_ 192 "This ID Transmits at 1000 ms.";
+CM_ BO_ 193 "This ID Transmits at 248 ms.";
+CM_ BO_ 194 "This ID Transmits at 1000 ms.";
